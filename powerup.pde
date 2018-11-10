@@ -27,7 +27,7 @@ class powerUp {
     PVector pos = new PVector();
     do {
       pos.x = random(0, width);
-      posX = random(0, height);
+      pos.y = random(0, height);
     } while (false); //Vervollständige
 
     return pos;
