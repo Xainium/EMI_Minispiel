@@ -1,11 +1,12 @@
 boolean isMenu = true;
+char background = 255;
 boolean[] keys;
-Menu menu = new Menu();
+Menu menu = new Menu(background);
 Player p1;
 Player p2;
 
 void setup(){
-  background(225);
+  background(background);
   size(800,600);
   p1 = new Player(50,height/2);
   p2 = new Player(width -50, height/2);
@@ -20,7 +21,7 @@ void draw(){
   if(isMenu){
     menu.render();
   } else{
-    background(255);
+    background(background);
   if(keys[0]){
     p1.moveY(-1);
   }
@@ -61,7 +62,7 @@ void mouseReleased(){
     int result;
     result = menu.checkPress(mouseX, mouseY);
     if(result != -1){
-      background(225);
+      background(background);
       switch (result){
         case 1:
           isMenu = false;
