@@ -95,16 +95,16 @@ void keyPressed(){
     keys[3]=true;
   }
 
-  if(keyCode == UP){
+  if(key == 'o'){
     keys[4]=true;
   }
-  if(keyCode == LEFT){
+  if(key == 'k'){
     keys[5]=true;
   }
-  if(keyCode == RIGHT){
+  if(key == 'ö'){
     keys[6]=true;
   }
-  if(keyCode == DOWN){
+  if(key == 'l'){
     keys[7]=true;
   }
 }
@@ -124,24 +124,24 @@ void keyReleased(){
     keys[3]=false;
   }
 
-  if(key == CODED && keyCode == UP){
+  if(key == 'o'){
     keys[4]=false;
   }
-  if(key == CODED && keyCode == LEFT){
+  if(key == 'k'){
     keys[5]=false;
   }
-  if(key == CODED && keyCode == RIGHT){
+  if(key == 'ö'){
     keys[6]=false;
   }
-  if(key == CODED && keyCode == DOWN){
+  if(key == 'l'){
    keys[7]=false;
  }
 
- if(key == 'e'){
+ if(key == 'c'){
    p1.shoot();
  }
 
- if(key == 'm'){
+ if(key == '-'){
    p2.shoot();
  }
 
