@@ -1,13 +1,13 @@
 class powerUp {
+  int[] s = new int[]{0,1};
+//  s = new int[]{0,1};
   int posX; //posX (width)
   int posY; //posY (height) von Powerup
   int p1X, p1Y, p2X, p2Y; //Spieler Postionen
   int difficulty; //Schwierigkeit
   String levelDifficulty; //Powerspawn Negativ + Postiv oder eins von beiden
-  String[] powerUpOptionsPositive = new String[5]; //[0][i]Positive und [1][i]Negative Powerups
-  String[] powerUpOptionsNegativ = new String[3];
-  int[] esfs = new int[2];
-  esfs[0] = 1;
+  String[] powerUpOptionsPositive; //[0][i]Positive und [1][i]Negative Powerups
+  String[] powerUpOptionsNegativ;
   String powerupChoose; //Powerup das gewählt wurde
 
   //Funktion zum auswwerten der Übergebenen Parameter
@@ -23,18 +23,13 @@ class powerUp {
 //  powerUpOptionsPositive = {"armor", "life", "speed", "shotSpeed", "shotBounce"}; //Positive Powerups
   //powerUpOptionsNegativ = {"slowness", "lifeSickness", "playerColorSwitch"}; //Negative Powerups
 
-  posX, posY = position(){
-    int posY = random(0, width);
-    int posX = random(0, height);
-
+  PVector position(){
+    PVector pos = new PVector();
     do {
+      pos.x = random(0, width);
+      posX = random(0, height);
+    } while (false); //Vervollständige
 
-    } while (true);
-  }
-
-  powerUpChoose = "armor";
-
-  switch (powerUpChoose) {
-    case
+    return pos;
   }
 }
