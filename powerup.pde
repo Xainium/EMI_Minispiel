@@ -4,14 +4,34 @@ class powerUp {
   String levelDifficulty; //Powerspawn Negativ + Postiv oder eins von beiden
   String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce"}; //Positive Powerups
   String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch"}; //Negative Powerups;
-  String powerupChoose; //Powerup das gewählt wurde
+  String powerUpChoose; //Powerup das gewählt wurde
 
   //Funktion zum auswwerten der Übergebenen Parameter
-  void powerUp(int tempP1X, int tempP1Y, int tempP2X, int tempP2Y, int tempDifficulty, String tempLevelDifficulty) {
+  void powerUp(int tempDifficulty, String tempLevelDifficulty, String tempPowerUpType, String tempPowerUpChoose) {
     difficulty = tempDifficulty;
     levelDifficulty = tempLevelDifficulty;
+
+    if (tempPowerUpChoose != null) {
+      powerUpChoose = tempPowerUpChoose;
+    } else {
+      if (tempPowerUpType != null) {
+        powerUpChoose = randomPowerUp(tempPowerUpType);
+      } else {
+        powerUpChoose = randomPowerUp();
+      }
+    }
   }
+
+  String setrRandomPowerUp(String tempPowerUpType) {
+    if (tempPowerUpType != null) {
+
+    } else {
+
+    }
+  }
+
   
+
   PVector setPos() {
     PVector pos = new PVector();
     do {
@@ -24,5 +44,9 @@ class powerUp {
 
   PVector getPos() {
     return pos;
+  }
+
+  void powerUpEffect(powerUpChoose) {
+    switch
   }
 }
