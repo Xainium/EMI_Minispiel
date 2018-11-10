@@ -1,7 +1,7 @@
 boolean isMenu = true;
 char background = 255;
 boolean[] keys;
-Menu menu = new Menu(background);
+Menu menu;
 Player p1;
 Player p2;
 
@@ -10,7 +10,7 @@ void setup(){
   size(800,600);
   p1 = new Player(50,height/2);
   p2 = new Player(width -50, height/2);
-
+  menu = new Menu(background, width, height);
   keys = new boolean[8];
   for(int i=0; i < keys.length; i++){
     keys[i] = false;
@@ -20,37 +20,37 @@ void setup(){
 void draw(){
   if(isMenu){
     menu.render();
+
   } else{
     background(background);
-  if(keys[0]){
-    p1.moveY(-1);
-  }
-  if(keys[1]){
-    p1.moveX(-1);
-  }
-  if(keys[2]){
-    p1.moveY(1);
-  }
-  if(keys[3]){
-    p1.moveX(1);
-  }
-  if(keys[4]){
-    p2.moveY(-1);
-  }
-  if(keys[5]){
-    p2.moveX(-1);
-  }
-  if(keys[6]){
-    p2.moveX(1);
-  }
-  if(keys[7]){
-    p2.moveY(1);
-  }
+    if(keys[0]){
+      p1.moveY(-1);
+    }
+    if(keys[1]){
+      p1.moveX(-1);
+    }
+    if(keys[2]){
+      p1.moveY(1);
+    }
+    if(keys[3]){
+      p1.moveX(1);
+    }
+    if(keys[4]){
+      p2.moveY(-1);
+    }
+    if(keys[5]){
+      p2.moveX(-1);
+    }
+    if(keys[6]){
+      p2.moveX(1);
+    }
+    if(keys[7]){
+      p2.moveY(1);
+    }
     p1.render();
     p1.updateShots();
     p2.render();
     p2.updateShots();
-
 
   }
 
@@ -62,15 +62,13 @@ void mouseReleased(){
     int result;
     result = menu.checkPress(mouseX, mouseY);
     if(result != -1){
-      background(background);
       switch (result){
         case 1:
           isMenu = false;
-
           break;
 
         case 2:
-          isMenu = false;
+          isMenu = true;
           break;
 
         case 3:
