@@ -1,4 +1,5 @@
 class Menu{
+  char background;
   boolean mainMenu = true;
   float y = height /5;
   float x = width/2 - 50;
@@ -9,6 +10,9 @@ class Menu{
   PVector bQuit = new PVector(200,400);
   PVector bBack = new PVector(width-75, height-75);
 
+  Menu(char background_in){
+    background = background_in;
+  }
 
   int checkPress(int mouse_x, int mouse_y){
     if(mainMenu){
@@ -36,13 +40,14 @@ class Menu{
       if(mouse_x > bBack.x && mouse_x < bBack.x + 75
          && mouse_y > bBack.y && mouse_y < bBack.y + 75){
            mainMenu = true;
-           background(255);
+           background(background);
     }
     return -1;
   }
 }
   void render(){
     if(mainMenu){
+      background(background);
       fill(100, 150, 255);
       rect(bStart.x,bStart.y,rectWidth,rectHeight,10);
       fill(220);
