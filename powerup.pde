@@ -71,10 +71,10 @@ class PowerUp {
   //Setzt Position den PowerUps
   void setPos() {
     do {
-      pos.x = random(0, width);
-      pos.y = random(0, height);
-      println("Position X: " + pos.x);
-      println("Position Y: " + pos.y);
+      pos.x = random(32, width - 32);
+      pos.y = random(32, height - 32);
+      //println("Position X: " + pos.x);
+      //println("Position Y: " + pos.y);
     } while (false); //Vervollständige
     //return pos; //muss nicht zurück gegeben werden
   }
