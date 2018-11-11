@@ -70,10 +70,11 @@ class PowerUp {
 
   //Setzt Position den PowerUps
   void setPos() {
-    PVector pos = new PVector();
     do {
       pos.x = random(0, width);
       pos.y = random(0, height);
+      println("Position X: " + pos.x);
+      println("Position Y: " + pos.y);
     } while (false); //Vervollständige
     //return pos; //muss nicht zurück gegeben werden
   }
@@ -92,6 +93,6 @@ class PowerUp {
 
   //Render Funktion für das Objekt auf dem Spielfeld
   void render() {
-    image(powerUpImg, 100, 100, 32, 32);
+    image(powerUpImg, pos.x, pos.y, 32, 32);
   }
 }
