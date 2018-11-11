@@ -7,7 +7,8 @@ class Player{
   PVector pos = new PVector();
 //neue Variabeln
   int life = 5;
-  int vel = 4;
+  int speed = 4;
+  PVector lastVel = new PVector();
   PVector[] shots;
   int sSize = 0;
 
@@ -26,12 +27,10 @@ void editColor(char r_in, char g_in, char b_in){
   g = g_in;
   b = b_in;
 }
-void moveX(int x){
-  pos.x += vel*x;
-}
-
-void moveY(int y){
-  pos.y += vel*y;
+void moveXY(int x, int y){
+  pos.x += speed*x;
+  pos.y += speed*y;
+  lastVel = pos.copy();
 }
 
 void render(){

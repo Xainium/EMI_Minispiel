@@ -4,17 +4,16 @@ char background = 255;
 boolean[] keys;
 //Objekte
 Menu menu;
-Player p1;
-Player p2;
+Player[] p = new Player[2];
 
 void setup(){
   background(background);
   size(800,600);
 //Player initialisieren
-  p1 = new Player(50,height/2);
-  p1.editColor(char(0), char(0), char(255));
-  p2 = new Player(width -50, height/2);
-  p2.editColor(char(255),char(0),char(0));
+  p[0] = new Player(50,height/2);
+  p[0].editColor(char(0), char(0), char(255));
+  p[1] = new Player(width -50, height/2);
+  p[1].editColor(char(255),char(0),char(0));
 //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
@@ -29,36 +28,64 @@ void draw(){
     menu.render();
 //Hauptspiel
   } else{
-    background(background);
+  //Abfrage welche Tasten gedrückt wurden
+      //Spieler Eins //Keys 0-3
+    //Wird 'W' (und 'A' oder 'D' gedrückt)
     if(keys[0]){
-      p1.moveY(-1);
-    }
-    if(keys[1]){
-      p1.moveX(-1);
-    }
-    if(keys[2]){
-      p1.moveY(1);
-    }
-    if(keys[3]){
-      p1.moveX(1);
-    }
-    if(keys[4]){
-      p2.moveY(-1);
-    }
-    if(keys[5]){
-      p2.moveX(-1);
-    }
-    if(keys[6]){
-      p2.moveX(1);
-    }
-    if(keys[7]){
-      p2.moveY(1);
-    }
+      if(keys[1]){
+        p[0].moveXY(-1,-1);
+      } else if(keys[3]){
+        p[0].moveXY(1,-1);
+      } else{
+        p[0].moveXY(0,-1);
+      }
+        //Wird 'S' (und 'A' oder 'D' gedrückt)
+        } else if(keys[2]){
+          if(keys[1]){
+            p[0].moveXY(-1,1);
+          } else if(keys[3]){
+            p[0].moveXY(1,1);
+          } else{
+            p[0].moveXY(0,1);
+            }
+      //Es wurden weder 'W' noch 'S' gedückt
+      } else if(keys[1]){ //wurde nur 'A' gedrückt
+          p[0].moveXY(-1,0);
+      } else if(keys[3]){ //wurde nur 'D' gedrückt
+          p[0].moveXY(1,0);
+        }
+
+
+    //Spieler Zwei //Keys 4-7
+    if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
+      if(keys[5]){
+        p[1].moveXY(-1,-1);
+      } else if(keys[7]){
+        p[1].moveXY(1,-1);
+      } else{
+        p[1].moveXY(0,-1);
+      }
+        //Wird 'L' (und 'K' oder 'Ö' gedrückt)
+        } else if(keys[6]){
+          if(keys[5]){
+            p[1].moveXY(-1,1);
+          } else if(keys[7]){
+            p[1].moveXY(1,1);
+          } else{
+            p[1].moveXY(0,1);
+            }
+      //Es wurden weder 'O' noch 'l' gedückt
+      } else if(keys[5]){ //wurde nur 'K' gedrückt
+          p[1].moveXY(-1,0);
+      } else if(keys[7]){ //wurde nur 'Ö' gedrückt
+          p[1].moveXY(1,0);
+        }
 //zeichne und Update die Spieler
-  p1.render();
-  p1.updateShots();
-  p2.render();
-  p2.updateShots();
+  background(background);
+  p[0].render();
+  p[0].updateShots();
+  p[1].render();
+  p[1].updateShots();
   }
 
 
@@ -110,12 +137,13 @@ void keyPressed(){
   if(key == 'k'){
     keys[5]=true;
   }
-  if(key == 'ö'){
+  if(key == 'l'){
     keys[6]=true;
   }
-  if(key == 'l'){
+  if(key == 'ö'){
     keys[7]=true;
   }
+
 }
 
 
@@ -141,19 +169,20 @@ void keyReleased(){
   if(key == 'k'){
     keys[5]=false;
   }
-  if(key == 'ö'){
-    keys[6]=false;
-  }
   if(key == 'l'){
-   keys[7]=false;
+   keys[6]=false;
  }
+  if(key == 'ö'){
+    keys[7]=false;
+  }
+
 //Schuss von Spieler Eins
  if(key == 'c'){
-   p1.shoot();
+   p[0].shoot();
  }
 //Schuss von Spieler Zwei
  if(key == '-'){
-   p2.shoot();
+   p[1].shoot();
  }
 
 }

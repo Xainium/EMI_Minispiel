@@ -20,17 +20,16 @@ char background = 255;
 boolean[] keys;
 //Objekte
 Menu menu;
-Player p1;
-Player p2;
+Player[] p = new Player[2];
 
 public void setup(){
   background(background);
   
 //Player initialisieren
-  p1 = new Player(50,height/2);
-  p1.editColor(PApplet.parseChar(0), PApplet.parseChar(0), PApplet.parseChar(255));
-  p2 = new Player(width -50, height/2);
-  p2.editColor(PApplet.parseChar(255),PApplet.parseChar(0),PApplet.parseChar(0));
+  p[0] = new Player(50,height/2);
+  p[0].editColor(PApplet.parseChar(0), PApplet.parseChar(0), PApplet.parseChar(255));
+  p[1] = new Player(width -50, height/2);
+  p[1].editColor(PApplet.parseChar(255),PApplet.parseChar(0),PApplet.parseChar(0));
 //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
@@ -45,36 +44,64 @@ public void draw(){
     menu.render();
 //Hauptspiel
   } else{
-    background(background);
+  //Abfrage welche Tasten gedrückt wurden
+      //Spieler Eins //Keys 0-3
+    //Wird 'W' (und 'A' oder 'D' gedrückt)
     if(keys[0]){
-      p1.moveY(-1);
-    }
-    if(keys[1]){
-      p1.moveX(-1);
-    }
-    if(keys[2]){
-      p1.moveY(1);
-    }
-    if(keys[3]){
-      p1.moveX(1);
-    }
-    if(keys[4]){
-      p2.moveY(-1);
-    }
-    if(keys[5]){
-      p2.moveX(-1);
-    }
-    if(keys[6]){
-      p2.moveX(1);
-    }
-    if(keys[7]){
-      p2.moveY(1);
-    }
+      if(keys[1]){
+        p[0].moveXY(-1,-1);
+      } else if(keys[3]){
+        p[0].moveXY(1,-1);
+      } else{
+        p[0].moveXY(0,-1);
+      }
+        //Wird 'S' (und 'A' oder 'D' gedrückt)
+        } else if(keys[2]){
+          if(keys[1]){
+            p[0].moveXY(-1,1);
+          } else if(keys[3]){
+            p[0].moveXY(1,1);
+          } else{
+            p[0].moveXY(0,1);
+            }
+      //Es wurden weder 'W' noch 'S' gedückt
+      } else if(keys[1]){ //wurde nur 'A' gedrückt
+          p[0].moveXY(-1,0);
+      } else if(keys[3]){ //wurde nur 'D' gedrückt
+          p[0].moveXY(1,0);
+        }
+
+
+    //Spieler Zwei //Keys 4-7
+    if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
+      if(keys[5]){
+        p[1].moveXY(-1,-1);
+      } else if(keys[7]){
+        p[1].moveXY(1,-1);
+      } else{
+        p[1].moveXY(0,-1);
+      }
+        //Wird 'L' (und 'K' oder 'Ö' gedrückt)
+        } else if(keys[6]){
+          if(keys[5]){
+            p[1].moveXY(-1,1);
+          } else if(keys[7]){
+            p[1].moveXY(1,1);
+          } else{
+            p[1].moveXY(0,1);
+            }
+      //Es wurden weder 'O' noch 'l' gedückt
+      } else if(keys[5]){ //wurde nur 'K' gedrückt
+          p[1].moveXY(-1,0);
+      } else if(keys[7]){ //wurde nur 'Ö' gedrückt
+          p[1].moveXY(1,0);
+        }
 //zeichne und Update die Spieler
-  p1.render();
-  p1.updateShots();
-  p2.render();
-  p2.updateShots();
+  background(background);
+  p[0].render();
+  p[0].updateShots();
+  p[1].render();
+  p[1].updateShots();
   }
 
 
@@ -126,12 +153,13 @@ public void keyPressed(){
   if(key == 'k'){
     keys[5]=true;
   }
-  if(key == 'ö'){
+  if(key == 'l'){
     keys[6]=true;
   }
-  if(key == 'l'){
+  if(key == 'ö'){
     keys[7]=true;
   }
+
 }
 
 
@@ -157,19 +185,20 @@ public void keyReleased(){
   if(key == 'k'){
     keys[5]=false;
   }
-  if(key == 'ö'){
-    keys[6]=false;
-  }
   if(key == 'l'){
-   keys[7]=false;
+   keys[6]=false;
  }
+  if(key == 'ö'){
+    keys[7]=false;
+  }
+
 //Schuss von Spieler Eins
  if(key == 'c'){
-   p1.shoot();
+   p[0].shoot();
  }
 //Schuss von Spieler Zwei
  if(key == '-'){
-   p2.shoot();
+   p[1].shoot();
  }
 
 }
@@ -332,7 +361,8 @@ class Player{
   PVector pos = new PVector();
 //neue Variabeln
   int life = 5;
-  int vel = 4;
+  int speed = 4;
+  PVector lastVel = new PVector();
   PVector[] shots;
   int sSize = 0;
 
@@ -351,12 +381,10 @@ public void editColor(char r_in, char g_in, char b_in){
   g = g_in;
   b = b_in;
 }
-public void moveX(int x){
-  pos.x += vel*x;
-}
-
-public void moveY(int y){
-  pos.y += vel*y;
+public void moveXY(int x, int y){
+  pos.x += speed*x;
+  pos.y += speed*y;
+  lastVel = pos.copy();
 }
 
 public void render(){
@@ -393,6 +421,7 @@ public void updateShots(){
 }
 
 }
+
 class powerUp {
   PVector pos = new PVector(); //Powerpos
   int difficulty; //Schwierigkeit
