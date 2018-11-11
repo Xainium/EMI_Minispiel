@@ -15,23 +15,21 @@ class powerUp {
       powerUpChoose = tempPowerUpChoose;
     } else {
       if (tempPowerUpType != null) {
-        //powerUpChoose = randomPowerUp(tempPowerUpType);
+        powerUpChoose = setRandomPowerUp(tempPowerUpType);
       } else {
-        //powerUpChoose = randomPowerUp();
+        powerUpChoose = setRandomPowerUp(null);
       }
     }
   }
 
-  String setrRandomPowerUp(String tempPowerUpType) {
+  String setRandomPowerUp(String tempPowerUpType) {
     if (tempPowerUpType != null) {
 
     } else {
 
     }
-    return "Noch einzufügen";
+    return "armor";
   }
-
-
 
   PVector setPos() {
     PVector pos = new PVector();
@@ -45,8 +43,5 @@ class powerUp {
 
   PVector getPos() {
     return pos;
-  }
-
-  void powerUpEffect(String powerUpChoose) {
   }
 }
