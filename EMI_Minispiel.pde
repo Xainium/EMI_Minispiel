@@ -23,10 +23,10 @@ void setup(){
 }
 
 void draw(){
-//Ist das Menü aktiv?
+  //Ist das Menü aktiv?
   if(isMenu){
     menu.render();
-//Hauptspiel
+    //Hauptspiel
   } else{
   //Abfrage welche Tasten gedrückt wurden
       //Spieler Eins //Keys 0-3
@@ -55,7 +55,6 @@ void draw(){
           p[0].moveXY(1,0);
         }
 
-
     //Spieler Zwei //Keys 4-7
     if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
       if(keys[5]){
@@ -80,21 +79,47 @@ void draw(){
       } else if(keys[7]){ //wurde nur 'Ö' gedrückt
           p[1].moveXY(1,0);
         }
-//zeichne und Update die Spieler
+  //zeichne und Update die Spieler
   background(background);
+  collision();
   p[0].render();
   p[0].updateShots();
   p[1].render();
   p[1].updateShots();
   }
 
+}
 
+void collision(){
+  int j;
+  for(int i=0; i < p.length; ++i){
+    if(i == p.length -1){
+      j = 0;
+    } else{
+      j = i+1;
+    }
+
+    float dist = p[i].pos.dist(p[j].pos);
+    if(dist < p[i].radius){
+      background(0);
+/*
+      PVector nDirection = new PVector();
+      nDirection = p[i].lastVel.copy();
+      nDirection.mult(-2*p[i].speed);
+      p[i].pos.add(nDirection);
+
+      nDirection = p[j].lastVel.copy();
+      nDirection.mult(-2*p[j].speed);
+      p[j].pos.add(nDirection);
+*/
+    }
+  }
 }
 
 void mouseReleased(){
   if(isMenu){
     int result;
-//Welcher Teil Im Menü wird angeklickt
+    //Welcher Teil Im Menü wird angeklickt
     result = menu.checkPress(mouseX, mouseY);
     if(result != -1){
       switch (result){
@@ -117,7 +142,7 @@ void mouseReleased(){
 
 
 void keyPressed(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=true;
   }
@@ -130,7 +155,7 @@ void keyPressed(){
   if(key == 'd'){
     keys[3]=true;
   }
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=true;
   }
@@ -143,12 +168,11 @@ void keyPressed(){
   if(key == 'ö'){
     keys[7]=true;
   }
-
 }
 
 
 void keyReleased(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=false;
   }
@@ -162,7 +186,7 @@ void keyReleased(){
     keys[3]=false;
   }
 
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=false;
   }
@@ -176,11 +200,11 @@ void keyReleased(){
     keys[7]=false;
   }
 
-//Schuss von Spieler Eins
+  //Schuss von Spieler Eins
  if(key == 'c'){
    p[0].shoot();
  }
-//Schuss von Spieler Zwei
+ //Schuss von Spieler Zwei
  if(key == '-'){
    p[1].shoot();
  }

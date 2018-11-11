@@ -8,6 +8,7 @@ class Player{
 //neue Variabeln
   int life = 5;
   int speed = 4;
+  int radius = 30;
   PVector lastVel = new PVector();
   Shot[] shots;
   int sSize = 0;
@@ -36,7 +37,7 @@ void moveXY(int x, int y){
 
 void render(){
   fill(r,g,b);
-  ellipse(pos.x, pos.y, 30, 30);
+  ellipse(pos.x, pos.y, radius, radius);
 
 }
 //Ein neuer Schuss
