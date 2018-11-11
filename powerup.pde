@@ -86,9 +86,8 @@ class PowerUp {
 
   //Grafik für PowerUp wird geladen
   void setPowerUpImage() {
-    String tempPowerUpImg = "img/powerup/" + powerUpChoose + ".png"; //C:/Users\lenna\Documents\GitHub\EMI_Minispiel\img\powerup\armor.PNG
+    String tempPowerUpImg = "img/powerup/" + powerUpChoose + ".png";
     powerUpImg = loadImage(tempPowerUpImg);
-    //powerUpImg = loadImage("armor.PNG");
   }
 
   //Render Funktion für das Objekt auf dem Spielfeld
