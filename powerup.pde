@@ -1,6 +1,7 @@
 class powerUp {
   PVector pos = new PVector(); //Powerpos
   int difficulty; //Schwierigkeit
+  int powerUpEffectPotency; //Die Wirksamkeit/potenz/Stärke des PowerUps
   String levelDifficulty; //Powerspawn Negativ + Postiv oder eins von beiden
   String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce"}; //Positive Powerups
   String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch"}; //Negative Powerups;
@@ -22,7 +23,7 @@ class powerUp {
 
   // Funktion um Random ein PowerUp zu generieren. Als Parameter kann übergeben werden ob das PowerUp positiv oder negativ sien soll.
   String setRandomPowerUp(String tempPowerUpType) {
-    int powerUpOption;
+    int powerUpOption; //Funktionsvariable um das Richtige Element aus den PowerUpTabellen zu ziehen
 
     if (tempPowerUpType == "positive") {
       powerUpOption = int(random(0, powerUpOptionsPositive.length - 1));
@@ -40,6 +41,22 @@ class powerUp {
     return powerUpOptionsPositive[powerUpOption];
   }
 
+  //Gibt den PowerUp Effekt zurück
+  String getRandomPowerUp() {
+    return powerUpChoose;
+  }
+
+  //Setzt die PowerUp Effekt Stärke/Potenz
+  int setPowerUpEffectPotency() {
+    return 0;
+  }
+
+  //Gibt die PowerUp Effekt Stärke/Potenz zurück
+  int getPowerUpEffectPotency() {
+    return powerUpEffectPotency;
+  }
+
+  //Setzt Position den PowerUps
   PVector setPos() {
     PVector pos = new PVector();
     do {
