@@ -6,7 +6,7 @@ class PowerUp {
   String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce", "shotHighCapacity"}; //Positive Powerups
   String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch", "shotLowCapacity"}; //Negative Powerups;
   String powerUpChoose; //Powerup das gewählt wurde
-  PImage powerUpImg;
+  PImage powerUpImg; //Img Variable zum laden des PowerUpsImg
 
   //Funktion zum auswwerten der Übergebenen Parameter und setzen des PowerUpStatus
   PowerUp(String tempPowerUpType, String tempPowerUpChoose) {
@@ -73,10 +73,7 @@ class PowerUp {
     do {
       pos.x = random(50, width - 50);
       pos.y = random(50, height - 50);
-      //println("Position X: " + pos.x);
-      //println("Position Y: " + pos.y);
     } while (false); //Vervollständige
-    //return pos; //muss nicht zurück gegeben werden
   }
 
   //Gibt die Position des PowerUps zurück
