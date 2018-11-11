@@ -1,4 +1,4 @@
-class powerUp {
+class PowerUp {
   PVector pos = new PVector(); //Powerpos
   int difficulty; //Schwierigkeit
   int powerUpEffectPotency; //Die Wirksamkeit/potenz/Stärke des PowerUps
@@ -6,9 +6,10 @@ class powerUp {
   String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce"}; //Positive Powerups
   String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch"}; //Negative Powerups;
   String powerUpChoose; //Powerup das gewählt wurde
+  PImage powerUpImg;
 
   //Funktion zum auswwerten der Übergebenen Parameter und setzen des PowerUpStatus
-  void powerUp(String tempPowerUpType, String tempPowerUpChoose) {
+  PowerUp(String tempPowerUpType, String tempPowerUpChoose) {
     if (tempPowerUpChoose != null) {
       powerUpChoose = tempPowerUpChoose;
     } else if (tempPowerUpType != null) {
@@ -74,10 +75,23 @@ class powerUp {
       pos.x = random(0, width);
       pos.y = random(0, height);
     } while (false); //Vervollständige
-    //return pos; muss nicht zurück gegeben werden
+    //return pos; //muss nicht zurück gegeben werden
   }
 
+  //Gibt die Position des PowerUps zurück
   PVector getPos() {
     return pos;
+  }
+
+  //Grafik für PowerUp wird geladen
+  void setPowerUpImage() {
+    String tempPowerUpImg = "img/powerup/" + powerUpChoose + ".PNG"; //C:/Users\lenna\Documents\GitHub\EMI_Minispiel\img\powerup\armor.PNG
+    powerUpImg = loadImage(tempPowerUpImg);
+    //powerUpImg = loadImage("armor.PNG");
+  }
+
+  //Render Funktion für das Objekt auf dem Spielfeld
+  void render() {
+    image(powerUpImg, 100, 100, 32, 32);
   }
 }

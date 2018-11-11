@@ -5,6 +5,7 @@ boolean[] keys;
 //Objekte
 Menu menu;
 Player[] p = new Player[2];
+PowerUp[] pU = new PowerUp[1];
 
 void setup(){
   background(background);
@@ -14,6 +15,11 @@ void setup(){
   p[0].editColor(char(0), char(0), char(255));
   p[1] = new Player(width -50, height/2);
   p[1].editColor(char(255),char(0),char(0));
+//PowerUp Single
+  pU[0] = new PowerUp("positive", "armor");
+  pU[0].setPowerUpEffectPotency(3, "normal");
+  pU[0].setPos();
+  pU[0].setPowerUpImage();
 //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
@@ -86,9 +92,10 @@ void draw(){
   p[0].updateShots();
   p[1].render();
   p[1].updateShots();
+
+  //render von Single PowerUps
+  pU[0].render();
   }
-
-
 }
 
 void mouseReleased(){
