@@ -22,23 +22,25 @@ Player(int x, int y){
   }
 
 }
+
 void editColor(char r_in, char g_in, char b_in){
   r = r_in;
   g = g_in;
   b = b_in;
 }
+
 void moveXY(int x, int y){
   PVector tempPos = new PVector(); //Spielfeld Begrenzung, Spieler können nicht mehr außerhalb des Spielfeldes
-  tempPos.x = pos.x + speed*x;
-  tempPos.y = pos.y + speed*y;
-  if ((tempPos.x <= width - 15) && (tempPos.x >= 15)) {
-    pos.x += speed*x;
+  tempPos.x = pos.x + speed*x; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
+  tempPos.y = pos.y + speed*y; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
+  if ((tempPos.x <= width - 15) && (tempPos.x >= 15)) { //Abfrage ob Linker oder Rechter Rand erreicht -15 Spielerballgröße
+    pos.x = tempPos.x; //"Globaler" Wert wird geändert Spielerballposition
   }
-  if ((tempPos.y <= height -15) && (tempPos.y >= 15)) {
-    pos.y += speed*y;
+  if ((tempPos.y <= height - 15) && (tempPos.y >= 15)) { //Abfrage ob oberer oder unterere Rand erreicht -15 Spielerballgröße
+    pos.y = tempPos.y; //"Golbaler" wert wird verändert Spielerballposition
   }
-  //pos.x += speed*x;
-  //pos.y += speed*y;
+  //pos.x += speed*x; //Kann gelöscht werden oder?
+  //pos.y += speed*y; //Kann gelöscht werden oder?
   lastVel.x = x;
   lastVel.y = y;
 }
@@ -48,6 +50,7 @@ void render(){
   ellipse(pos.x, pos.y, 30, 30);
 
 }
+
 //Ein neuer Schuss
 void shoot(){
   if(sSize == shots.length){
@@ -60,7 +63,6 @@ void shoot(){
   shots[sSize-1].direction.x = lastVel.x;
   shots[sSize-1].direction.y = lastVel.y;
 }
-
 
 //wenn schonmal geschossen wurde üperprüfe alle Schüsse
 void updateShots(){
