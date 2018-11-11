@@ -16,7 +16,7 @@ void setup(){
   p[1] = new Player(width -50, height/2);
   p[1].editColor(char(255),char(0),char(0));
 //PowerUp Single
-  pU[0] = new PowerUp("positive", null);
+  pU[0] = new PowerUp(null, null);
   pU[0].setPowerUpEffectPotency(3, "normal");
   pU[0].setPos();
   pU[0].setPowerUpImage();

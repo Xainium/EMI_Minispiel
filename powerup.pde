@@ -13,30 +13,30 @@ class PowerUp {
     if (tempPowerUpChoose != null) {
       powerUpChoose = tempPowerUpChoose;
     } else if (tempPowerUpType != null) {
-      powerUpChoose = setRandomPowerUp(tempPowerUpType);
+      setRandomPowerUp(tempPowerUpType);
     } else {
-      powerUpChoose = setRandomPowerUp(null);
+      setRandomPowerUp(null);
     }
   }
 
   // Funktion um Random ein PowerUp zu generieren. Als Parameter kann übergeben werden ob das PowerUp positiv oder negativ sien soll.
-  String setRandomPowerUp(String tempPowerUpType) {
+  void setRandomPowerUp(String tempPowerUpType) {
     int powerUpOption; //Funktionsvariable um das Richtige Element aus den PowerUpTabellen zu ziehen
-
     if (tempPowerUpType == "positive") {
       powerUpOption = int(random(0, powerUpOptionsPositive.length - 1));
-      int intPowerUpOption = powerUpOption;
+      powerUpChoose = powerUpOptionsPositive[powerUpOption];
     } else if (tempPowerUpType == "negativ") {
       powerUpOption = int(random(0, powerUpOptionsNegativ.length - 1));
+      powerUpChoose = powerUpOptionsNegativ[powerUpOption];
     } else {
       powerUpOption = int(random(0, powerUpOptionsPositive.length + powerUpOptionsNegativ.length - 1));
       if (powerUpOption >= powerUpOptionsPositive.length - 1) {
-        powerUpOption -= powerUpOptionsPositive.length;
+        powerUpOption -= powerUpOptionsPositive.length - 1;
+        powerUpChoose = powerUpOptionsNegativ[powerUpOption];
       } else {
-
+        powerUpChoose = powerUpOptionsPositive[powerUpOption];
       }
     }
-    return powerUpOptionsPositive[powerUpOption];
   }
 
   //Gibt den PowerUp Effekt zurück
@@ -71,8 +71,8 @@ class PowerUp {
   //Setzt Position den PowerUps
   void setPos() {
     do {
-      pos.x = random(32, width - 32);
-      pos.y = random(32, height - 32);
+      pos.x = random(50, width - 50);
+      pos.y = random(50, height - 50);
       //println("Position X: " + pos.x);
       //println("Position Y: " + pos.y);
     } while (false); //Vervollständige
