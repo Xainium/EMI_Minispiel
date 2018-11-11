@@ -363,16 +363,16 @@ class Player{
   int life = 5;
   int speed = 4;
   PVector lastVel = new PVector();
-  PVector[] shots;
+  Shot[] shots;
   int sSize = 0;
 
 //Konstruktor
 Player(int x, int y){
   pos.x = x;
   pos.y = y;
-  shots = new PVector[8];
+  shots = new Shot[8];
   for(int i=0; i < shots.length; i++){
-    shots[i] = new PVector(-1,-1);
+    shots[i] = new Shot();
   }
 
 }
@@ -384,7 +384,8 @@ public void editColor(char r_in, char g_in, char b_in){
 public void moveXY(int x, int y){
   pos.x += speed*x;
   pos.y += speed*y;
-  lastVel = pos.copy();
+  lastVel.x = x;
+  lastVel.y = y;
 }
 
 public void render(){
@@ -399,29 +400,52 @@ public void shoot(){
   }else{
      sSize++;
   }
-  shots[sSize-1].x = pos.x;
-  shots[sSize-1].y = pos.y;
+  shots[sSize-1].pos.x = pos.x;
+  shots[sSize-1].pos.y = pos.y;
+  shots[sSize-1].direction.x = lastVel.x;
+  shots[sSize-1].direction.y = lastVel.y;
 }
 
 
 //wenn schonmal geschossen wurde üperprüfe alle Schüsse
 public void updateShots(){
   for(int i=0; i < shots.length; i++){
-    if(shots[i].x != -1 && shots[i].y != -1){
-      shots[i].x ++;
-      if(shots[i].x > width){
-        shots[i].x = -1;
-        shots[i].y = -1;
+    if(shots[i].pos.x != -1 && shots[i].pos.y != -1){
+      shots[i].move();
+      if(shots[i].pos.x > width || shots[i].pos.x < 0 || shots[i].pos.y > height || shots[i].pos.y < 0){
+        shots[i].pos.x = -1;
+        shots[i].pos.y = -1;
       }
 //zeichne für jeden Schuss ein Viereck
       fill(r,g,b);
-      rect(shots[i].x,shots[i].y,10,10);
+      rect(shots[i].pos.x,shots[i].pos.y,10,10);
     }
   }
 }
 
 }
+class Shot{
+  PVector pos = new PVector();
+  PVector direction = new PVector();
+  int speed = 4;
 
+  Shot(){
+    pos.x = -1;
+    pos.y = -1;
+    direction.x = 0;
+    direction.y = 0;
+  }
+
+  public void move(){
+    if(direction.x != 0 || direction.y != 0){
+        pos.x += direction.x*speed;
+        pos.y += direction.y*speed;
+    } else{
+      pos.x += speed;
+    }
+
+  }
+}
 class powerUp {
   PVector pos = new PVector(); //Powerpos
   int difficulty; //Schwierigkeit
