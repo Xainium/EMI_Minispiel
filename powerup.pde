@@ -8,10 +8,7 @@ class powerUp {
   String powerUpChoose; //Powerup das gewählt wurde
 
   //Funktion zum auswwerten der Übergebenen Parameter und setzen des PowerUpStatus
-  void powerUp(int tempDifficulty, String tempLevelDifficulty, String tempPowerUpType, String tempPowerUpChoose) {
-    difficulty = tempDifficulty;
-    levelDifficulty = tempLevelDifficulty;
-
+  void powerUp(String tempPowerUpType, String tempPowerUpChoose) {
     if (tempPowerUpChoose != null) {
       powerUpChoose = tempPowerUpChoose;
     } else if (tempPowerUpType != null) {
@@ -42,13 +39,27 @@ class powerUp {
   }
 
   //Gibt den PowerUp Effekt zurück
-  String getRandomPowerUp() {
+  String getPowerUpChoose() {
     return powerUpChoose;
   }
 
   //Setzt die PowerUp Effekt Stärke/Potenz
-  int setPowerUpEffectPotency() {
-    return 0;
+  void setPowerUpEffectPotency(int tempDifficulty, String tempLevelDifficulty) {
+    int tempPowerUpEffectPotency;
+    switch (tempLevelDifficulty) {
+      case "easy":
+        powerUpEffectPotency = tempDifficulty + 2;
+      case "normal":
+        powerUpEffectPotency = tempDifficulty;
+      case "hard":
+        if (tempDifficulty >= 3) {
+          powerUpEffectPotency = tempDifficulty - 2;
+        } else if (tempDifficulty >= 2) {
+          powerUpEffectPotency = tempDifficulty - 1;
+        } else {
+          powerUpEffectPotency = tempDifficulty;
+        }
+    }
   }
 
   //Gibt die PowerUp Effekt Stärke/Potenz zurück
@@ -57,13 +68,13 @@ class powerUp {
   }
 
   //Setzt Position den PowerUps
-  PVector setPos() {
+  void setPos() {
     PVector pos = new PVector();
     do {
       pos.x = random(0, width);
       pos.y = random(0, height);
     } while (false); //Vervollständige
-    return pos;
+    //return pos; muss nicht zurück gegeben werden
   }
 
   PVector getPos() {
