@@ -28,8 +28,17 @@ void editColor(char r_in, char g_in, char b_in){
   b = b_in;
 }
 void moveXY(int x, int y){
-  pos.x += speed*x;
-  pos.y += speed*y;
+  PVector tempPos = new PVector(); //Spielfeld Begrenzung, Spieler können nicht mehr außerhalb des Spielfeldes
+  tempPos.x = pos.x + speed*x;
+  tempPos.y = pos.y + speed*y;
+  if ((tempPos.x <= width - 15) && (tempPos.x >= 15)) {
+    pos.x += speed*x;
+  }
+  if ((tempPos.y <= height -15) && (tempPos.y >= 15)) {
+    pos.y += speed*y;
+  }
+  //pos.x += speed*x;
+  //pos.y += speed*y;
   lastVel.x = x;
   lastVel.y = y;
 }
