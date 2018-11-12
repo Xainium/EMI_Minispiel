@@ -34,7 +34,7 @@ void draw(){
     menu.render();
 //Hauptspiel
   } else{
-  //Abfrage welche Tasten gedrückt wurden
+    //Abfrage welche Tasten gedrückt wurden
       //Spieler Eins //Keys 0-3
     //Wird 'W' (und 'A' oder 'D' gedrückt)
     if(keys[0]){
@@ -88,6 +88,7 @@ void draw(){
         }
 //zeichne und Update die Spieler
   background(background);
+//  collisionPlayerAndPowerUp();
   p[0].render();
   p[0].updateShots();
   p[1].render();
@@ -98,10 +99,25 @@ void draw(){
   }
 }
 
+void collisionPlayerAndPowerUp(){
+  for(Player player : p){
+    for(int i = 0; i < pU.length; ++i){
+      for(int j = int(pU[i].pos.x) - PowerUp.iconRad; i <= int(pU[i].pos.x) + PowerUp.iconRad; ++j){
+        for(int k = int(pU[i].pos.y) - PowerUp.iconRad; k <= int(pU[i].pos.y) + PowerUp.iconRad; ++k){
+          if(new PVector(k,j).dist(player.pos) <= Player.rad/2){
+            background(0);
+          }
+        }
+      }
+    }
+
+  }
+}
+
 void mouseReleased(){
   if(isMenu){
     int result;
-//Welcher Teil Im Menü wird angeklickt
+    //Welcher Teil Im Menü wird angeklickt
     result = menu.checkPress(mouseX, mouseY);
     if(result != -1){
       switch (result){
@@ -124,7 +140,7 @@ void mouseReleased(){
 
 
 void keyPressed(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=true;
   }
@@ -137,7 +153,7 @@ void keyPressed(){
   if(key == 'd'){
     keys[3]=true;
   }
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=true;
   }

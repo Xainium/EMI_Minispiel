@@ -21,6 +21,7 @@ boolean[] keys;
 //Objekte
 Menu menu;
 Player[] p = new Player[2];
+PowerUp[] pU = new PowerUp[1];
 
 public void setup(){
   background(background);
@@ -30,6 +31,11 @@ public void setup(){
   p[0].editColor(PApplet.parseChar(0), PApplet.parseChar(0), PApplet.parseChar(255));
   p[1] = new Player(width -50, height/2);
   p[1].editColor(PApplet.parseChar(255),PApplet.parseChar(0),PApplet.parseChar(0));
+//PowerUp Single
+  pU[0] = new PowerUp(null, null);
+  pU[0].setPowerUpEffectPotency(3, "normal");
+  pU[0].setPos();
+  pU[0].setPowerUpImage();
 //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
@@ -44,7 +50,7 @@ public void draw(){
     menu.render();
 //Hauptspiel
   } else{
-  //Abfrage welche Tasten gedrückt wurden
+    //Abfrage welche Tasten gedrückt wurden
       //Spieler Eins //Keys 0-3
     //Wird 'W' (und 'A' oder 'D' gedrückt)
     if(keys[0]){
@@ -98,19 +104,36 @@ public void draw(){
         }
 //zeichne und Update die Spieler
   background(background);
+//  collisionPlayerAndPowerUp();
   p[0].render();
   p[0].updateShots();
   p[1].render();
   p[1].updateShots();
+
+  //render von Single PowerUps
+  pU[0].render();
   }
+}
 
+public void collisionPlayerAndPowerUp(){
+  for(Player player : p){
+    for(int i = 0; i < pU.length; ++i){
+      for(int j = PApplet.parseInt(pU[i].pos.x) - PowerUp.iconRad; i <= PApplet.parseInt(pU[i].pos.x) + PowerUp.iconRad; ++j){
+        for(int k = PApplet.parseInt(pU[i].pos.y) - PowerUp.iconRad; k <= PApplet.parseInt(pU[i].pos.y) + PowerUp.iconRad; ++k){
+          if(new PVector(k,j).dist(player.pos) <= Player.rad/2){
+            background(0);
+          }
+        }
+      }
+    }
 
+  }
 }
 
 public void mouseReleased(){
   if(isMenu){
     int result;
-//Welcher Teil Im Menü wird angeklickt
+    //Welcher Teil Im Menü wird angeklickt
     result = menu.checkPress(mouseX, mouseY);
     if(result != -1){
       switch (result){
@@ -133,7 +156,7 @@ public void mouseReleased(){
 
 
 public void keyPressed(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=true;
   }
@@ -146,7 +169,7 @@ public void keyPressed(){
   if(key == 'd'){
     keys[3]=true;
   }
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=true;
   }
@@ -359,6 +382,8 @@ class Player{
   char b = 0;
 //Übergebene Variabel
   PVector pos = new PVector();
+//static Variabel
+  static final int rad = 30;
 //neue Variabeln
   int life = 5;
   int speed = 4;
@@ -376,23 +401,35 @@ Player(int x, int y){
   }
 
 }
+
 public void editColor(char r_in, char g_in, char b_in){
   r = r_in;
   g = g_in;
   b = b_in;
 }
+
 public void moveXY(int x, int y){
-  pos.x += speed*x;
-  pos.y += speed*y;
+  PVector tempPos = new PVector(); //Spielfeld Begrenzung, Spieler können nicht mehr außerhalb des Spielfeldes
+  tempPos.x = pos.x + speed*x; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
+  tempPos.y = pos.y + speed*y; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
+  if ((tempPos.x <= width - rad/2) && (tempPos.x >= rad/2)) { //Abfrage ob Linker oder Rechter Rand erreicht -15 Spielerballgröße
+    pos.x = tempPos.x; //"Globaler" Wert wird geändert Spielerballposition
+  }
+  if ((tempPos.y <= height - rad/2) && (tempPos.y >= rad/2)) { //Abfrage ob oberer oder unterere Rand erreicht -15 Spielerballgröße
+    pos.y = tempPos.y; //"Golbaler" wert wird verändert Spielerballposition
+  }
+  //pos.x += speed*x; //Kann gelöscht werden oder?
+  //pos.y += speed*y; //Kann gelöscht werden oder?
   lastVel.x = x;
   lastVel.y = y;
 }
 
 public void render(){
   fill(r,g,b);
-  ellipse(pos.x, pos.y, 30, 30);
+  ellipse(pos.x, pos.y, rad, rad);
 
 }
+
 //Ein neuer Schuss
 public void shoot(){
   if(sSize == shots.length){
@@ -406,7 +443,6 @@ public void shoot(){
   shots[sSize-1].direction.y = lastVel.y;
 }
 
-
 //wenn schonmal geschossen wurde üperprüfe alle Schüsse
 public void updateShots(){
   for(int i=0; i < shots.length; i++){
@@ -417,8 +453,7 @@ public void updateShots(){
         shots[i].pos.y = -1;
       }
 //zeichne für jeden Schuss ein Viereck
-      fill(r,g,b);
-      rect(shots[i].pos.x,shots[i].pos.y,10,10);
+      shots[i].render(r,g,b);
     }
   }
 }
@@ -428,6 +463,7 @@ class Shot{
   PVector pos = new PVector();
   PVector direction = new PVector();
   int speed = 4;
+  static final int rad = 10;
 
   Shot(){
     pos.x = -1;
@@ -443,59 +479,106 @@ class Shot{
     } else{
       pos.x += speed;
     }
-
+  }
+  public void render(int r, int g, int b){
+    fill(r,g,b);
+    rect(pos.x, pos.y, rad, rad);
   }
 }
-class powerUp {
+class PowerUp {
   PVector pos = new PVector(); //Powerpos
+  static final int iconRad = 50;
   int difficulty; //Schwierigkeit
+  int powerUpEffectPotency; //Die Wirksamkeit/potenz/Stärke des PowerUps
   String levelDifficulty; //Powerspawn Negativ + Postiv oder eins von beiden
-  String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce"}; //Positive Powerups
-  String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch"}; //Negative Powerups;
+  String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce", "shotHighCapacity"}; //Positive Powerups
+  String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch", "shotLowCapacity"}; //Negative Powerups; //playerColorSwitch später vllt. playerIconSwitch
   String powerUpChoose; //Powerup das gewählt wurde
+  PImage powerUpImg; //Img Variable zum laden des PowerUpsImg
 
-  //Funktion zum auswwerten der Übergebenen Parameter
-  public void powerUp(int tempDifficulty, String tempLevelDifficulty, String tempPowerUpType, String tempPowerUpChoose) {
-    difficulty = tempDifficulty;
-    levelDifficulty = tempLevelDifficulty;
-
+  //Funktion zum auswwerten der Übergebenen Parameter und setzen des PowerUpStatus
+  PowerUp(String tempPowerUpType, String tempPowerUpChoose) {
     if (tempPowerUpChoose != null) {
       powerUpChoose = tempPowerUpChoose;
+    } else if (tempPowerUpType != null) {
+      setRandomPowerUp(tempPowerUpType);
     } else {
-      if (tempPowerUpType != null) {
-        //powerUpChoose = randomPowerUp(tempPowerUpType);
+      setRandomPowerUp(null);
+    }
+  }
+
+  // Funktion um Random ein PowerUp zu generieren. Als Parameter kann übergeben werden ob das PowerUp positiv oder negativ sien soll.
+  public void setRandomPowerUp(String tempPowerUpType) {
+    int powerUpOption; //Funktionsvariable um das Richtige Element aus den PowerUpTabellen zu ziehen
+    if (tempPowerUpType == "positive") {
+      powerUpOption = PApplet.parseInt(random(0, powerUpOptionsPositive.length - 1));
+      powerUpChoose = powerUpOptionsPositive[powerUpOption];
+    } else if (tempPowerUpType == "negativ") {
+      powerUpOption = PApplet.parseInt(random(0, powerUpOptionsNegativ.length - 1));
+      powerUpChoose = powerUpOptionsNegativ[powerUpOption];
+    } else {
+      powerUpOption = PApplet.parseInt(random(0, powerUpOptionsPositive.length + powerUpOptionsNegativ.length - 1));
+      if (powerUpOption >= powerUpOptionsPositive.length - 1) {
+        powerUpOption -= powerUpOptionsPositive.length - 1;
+        powerUpChoose = powerUpOptionsNegativ[powerUpOption];
       } else {
-        //powerUpChoose = randomPowerUp();
+        powerUpChoose = powerUpOptionsPositive[powerUpOption];
       }
     }
   }
 
-  public String setrRandomPowerUp(String tempPowerUpType) {
-    if (tempPowerUpType != null) {
+  //Gibt den PowerUp Effekt zurück
+  public String getPowerUpChoose() {
+    return powerUpChoose;
+  }
 
-    } else {
-
+  //Setzt die PowerUp Effekt Stärke/Potenz
+  public void setPowerUpEffectPotency(int tempDifficulty, String tempLevelDifficulty) {
+    int tempPowerUpEffectPotency;
+    switch (tempLevelDifficulty) {
+      case "easy":
+        powerUpEffectPotency = tempDifficulty + 2;
+      case "normal":
+        powerUpEffectPotency = tempDifficulty;
+      case "hard":
+        if (tempDifficulty >= 3) {
+          powerUpEffectPotency = tempDifficulty - 2;
+        } else if (tempDifficulty >= 2) {
+          powerUpEffectPotency = tempDifficulty - 1;
+        } else {
+          powerUpEffectPotency = tempDifficulty;
+        }
     }
-    return "Noch einzufügen";
   }
 
+  //Gibt die PowerUp Effekt Stärke/Potenz zurück
+  public int getPowerUpEffectPotency() {
+    return powerUpEffectPotency;
+  }
 
-
-  public PVector setPos() {
-    PVector pos = new PVector();
+  //Setzt Position den PowerUps
+  public void setPos() {
     do {
-      pos.x = random(0, width);
-      pos.y = random(0, height);
+      pos.x = random(50, width - 50);
+      pos.y = random(50, height - 50);
     } while (false); //Vervollständige
-
-    return pos;
   }
 
+  //Gibt die Position des PowerUps zurück
   public PVector getPos() {
     return pos;
   }
 
-  public void powerUpEffect(String powerUpChoose) {
+  //Grafik für PowerUp wird geladen
+  public void setPowerUpImage() {
+    String tempPowerUpImg = "img/powerup/" + powerUpChoose + ".png";
+    powerUpImg = loadImage(tempPowerUpImg);
+  }
+
+  //Render Funktion für das Objekt auf dem Spielfeld
+  public void render() {
+    imageMode(CENTER);
+    image(powerUpImg, pos.x, pos.y, iconRad, iconRad);
   }
 }
   public void settings() {  size(800,600); }

@@ -5,6 +5,8 @@ class Player{
   char b = 0;
 //Übergebene Variabel
   PVector pos = new PVector();
+//static Variabel
+  static final int rad = 30;
 //neue Variabeln
   int life = 5;
   int speed = 4;
@@ -33,10 +35,10 @@ void moveXY(int x, int y){
   PVector tempPos = new PVector(); //Spielfeld Begrenzung, Spieler können nicht mehr außerhalb des Spielfeldes
   tempPos.x = pos.x + speed*x; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
   tempPos.y = pos.y + speed*y; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
-  if ((tempPos.x <= width - 15) && (tempPos.x >= 15)) { //Abfrage ob Linker oder Rechter Rand erreicht -15 Spielerballgröße
+  if ((tempPos.x <= width - rad/2) && (tempPos.x >= rad/2)) { //Abfrage ob Linker oder Rechter Rand erreicht -15 Spielerballgröße
     pos.x = tempPos.x; //"Globaler" Wert wird geändert Spielerballposition
   }
-  if ((tempPos.y <= height - 15) && (tempPos.y >= 15)) { //Abfrage ob oberer oder unterere Rand erreicht -15 Spielerballgröße
+  if ((tempPos.y <= height - rad/2) && (tempPos.y >= rad/2)) { //Abfrage ob oberer oder unterere Rand erreicht -15 Spielerballgröße
     pos.y = tempPos.y; //"Golbaler" wert wird verändert Spielerballposition
   }
   //pos.x += speed*x; //Kann gelöscht werden oder?
@@ -47,7 +49,7 @@ void moveXY(int x, int y){
 
 void render(){
   fill(r,g,b);
-  ellipse(pos.x, pos.y, 30, 30);
+  ellipse(pos.x, pos.y, rad, rad);
 
 }
 
@@ -74,8 +76,7 @@ void updateShots(){
         shots[i].pos.y = -1;
       }
 //zeichne für jeden Schuss ein Viereck
-      fill(r,g,b);
-      rect(shots[i].pos.x,shots[i].pos.y,10,10);
+      shots[i].render(r,g,b);
     }
   }
 }

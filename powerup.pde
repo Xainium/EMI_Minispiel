@@ -1,6 +1,6 @@
 class PowerUp {
   PVector pos = new PVector(); //Powerpos
-  static final int iconRadius = 50;
+  static final int iconRad = 50;
   int difficulty; //Schwierigkeit
   int powerUpEffectPotency; //Die Wirksamkeit/potenz/Stärke des PowerUps
   String levelDifficulty; //Powerspawn Negativ + Postiv oder eins von beiden
@@ -90,6 +90,7 @@ class PowerUp {
 
   //Render Funktion für das Objekt auf dem Spielfeld
   void render() {
-    image(powerUpImg, pos.x, pos.y, iconRadius, iconRadius);
+    imageMode(CENTER);
+    image(powerUpImg, pos.x, pos.y, iconRad, iconRad);
   }
 }
