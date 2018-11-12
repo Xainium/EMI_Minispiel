@@ -1,10 +1,11 @@
 class PowerUp {
   PVector pos = new PVector(); //Powerpos
+  static final int iconRadius = 50;
   int difficulty; //Schwierigkeit
   int powerUpEffectPotency; //Die Wirksamkeit/potenz/Stärke des PowerUps
   String levelDifficulty; //Powerspawn Negativ + Postiv oder eins von beiden
   String[] powerUpOptionsPositive = new String[]{"armor", "life", "speed", "shotSpeed", "shotBounce", "shotHighCapacity"}; //Positive Powerups
-  String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch", "shotLowCapacity"}; //Negative Powerups;
+  String[] powerUpOptionsNegativ = new String[]{"slowness", "lifeSickness", "playerColorSwitch", "shotLowCapacity"}; //Negative Powerups; //playerColorSwitch später vllt. playerIconSwitch
   String powerUpChoose; //Powerup das gewählt wurde
   PImage powerUpImg; //Img Variable zum laden des PowerUpsImg
 
@@ -89,6 +90,6 @@ class PowerUp {
 
   //Render Funktion für das Objekt auf dem Spielfeld
   void render() {
-    image(powerUpImg, pos.x, pos.y, 50, 50);
+    image(powerUpImg, pos.x, pos.y, iconRadius, iconRadius);
   }
 }
