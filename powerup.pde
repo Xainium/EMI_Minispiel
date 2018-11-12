@@ -51,8 +51,10 @@ class PowerUp {
     switch (tempLevelDifficulty) {
       case "easy":
         powerUpEffectPotency = tempDifficulty + 2;
+        break;
       case "normal":
         powerUpEffectPotency = tempDifficulty;
+        break;
       case "hard":
         if (tempDifficulty >= 3) {
           powerUpEffectPotency = tempDifficulty - 2;
@@ -61,6 +63,7 @@ class PowerUp {
         } else {
           powerUpEffectPotency = tempDifficulty;
         }
+        break;
     }
   }
 
@@ -92,5 +95,40 @@ class PowerUp {
   void render() {
     imageMode(CENTER);
     image(powerUpImg, pos.x, pos.y, iconRad, iconRad);
+  }
+
+  void powerUpAcitvation(Player p) {
+    switch (powerUpChoose) {
+      case "armor":
+        p.armor += powerUpEffectPotency;
+        break;
+      case "life":
+        p.life += powerUpEffectPotency;
+        break;
+      case "speed":
+        p.speed += powerUpEffectPotency;
+        break;
+      case "shotSpeed":
+        p.shotSpeed += powerUpEffectPotency;
+        break;
+      case "shotBounce":
+        p.shotBounce = true;
+        break;
+      case "shotHighCapacity":
+        p.shotCapacity += powerUpEffectPotency;
+        break;
+      case "slowness":
+        p.speed -= powerUpEffectPotency;
+        break;
+      case "lifeSickness":
+        p.life -= powerUpEffectPotency;
+        break;
+      case "playerColorSwitch":
+        //char temp[] = p.getColor();
+        break;
+      case "shotLowCapacity":
+        p.shotCapacity -= powerUpEffectPotency;
+        break;
+    }
   }
 }

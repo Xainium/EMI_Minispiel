@@ -10,6 +10,10 @@ class Player{
 //neue Variabeln
   int life = 5;
   int speed = 4;
+  int armor = 0;
+  int shotSpeed = 0;
+  int shotCapacity = 0;
+  boolean shotBounce = false;
   PVector lastVel = new PVector();
   Shot[] shots;
   int sSize = 0;
@@ -29,6 +33,11 @@ void editColor(char r_in, char g_in, char b_in){
   r = r_in;
   g = g_in;
   b = b_in;
+}
+
+Color getColor() {
+  Color c = new Color(r,g,b);
+  return c;
 }
 
 void moveXY(int x, int y){
