@@ -1,7 +1,10 @@
 //import der Soundlibary zum Abspielen von Backgroundmusic und anderen Sounds
 import processing.sound.*;
 //Sound wird deklariert
-SoundFile backgroundMusic;
+SoundFile backGroundMusic;
+String backGroundMusicPath = "sound/background";
+File backGroundMusicPathFile;
+String[] backGroundMusicList;
 
 boolean isMenu = true;
 char background = 255;
@@ -15,32 +18,39 @@ PowerUp[] pU = new PowerUp[1];
 void setup(){
   background(background);
   size(800,600);
-//Player initialisieren
+  //Player initialisieren
   p[0] = new Player(50,height/2);
   p[0].editColor(char(0), char(0), char(255));
   p[1] = new Player(width -50, height/2);
   p[1].editColor(char(255),char(0),char(0));
-//PowerUp Single
+  //PowerUp Single
   pU[0] = new PowerUp();
   pU[0].setPowerUpEffectPotency(3, "normal");
   pU[0].setPos();
   pU[0].setPowerUpImage();
-//Menü initialisieren
+  //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
   for(int i=0; i < keys.length; i++){
     keys[i] = false;
   }
 
-  backgroundMusic = new SoundFile(this, "sound/background/Adventure Meme.mp3");
-  backgroundMusic.play();
+  //BackGroundMusic Initialisiert
+  backGroundMusicPathFile = new File(sketchPath("/" + backGroundMusicPath));
+  backGroundMusicList = backGroundMusicPathFile.list();
+  //println(backGroundMusicList);
+  backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
+  backGroundMusic.amp(0.05);
+  //backGroundMusic.play();
 }
 
 void draw(){
-//Ist das Menü aktiv?
+  //Ist das Menü aktiv?
+  music();
+
   if(isMenu){
     menu.render();
-//Hauptspiel
+    //Hauptspiel
   } else{
     //Abfrage welche Tasten gedrückt wurden
       //Spieler Eins //Keys 0-3
@@ -94,9 +104,9 @@ void draw(){
       } else if(keys[7]){ //wurde nur 'Ö' gedrückt
           p[1].moveXY(1,0);
         }
-//zeichne und Update die Spieler
+  //zeichne und Update die Spieler
   background(background);
-//  collisionPlayerAndPowerUp();
+  //  collisionPlayerAndPowerUp();
   p[0].render();
   p[0].updateShots();
   p[1].render();
@@ -104,6 +114,14 @@ void draw(){
 
   //render von Single PowerUps
   pU[0].render();
+  }
+}
+
+void music() {
+  if (!(backGroundMusic.isPlaying())) {
+    backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
+    backGroundMusic.amp(0.05);
+    backGroundMusic.play();
   }
 }
 
@@ -146,7 +164,6 @@ void mouseReleased(){
   }
 }
 
-
 void keyPressed(){
   //Tasten von Spieler Eins
   if(key=='w'){
@@ -177,9 +194,8 @@ void keyPressed(){
 
 }
 
-
 void keyReleased(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=false;
   }
@@ -193,7 +209,7 @@ void keyReleased(){
     keys[3]=false;
   }
 
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=false;
   }
@@ -207,11 +223,11 @@ void keyReleased(){
     keys[7]=false;
   }
 
-//Schuss von Spieler Eins
+  //Schuss von Spieler Eins
  if(key == 'c'){
    p[0].shoot();
  }
-//Schuss von Spieler Zwei
+ //Schuss von Spieler Zwei
  if(key == '-'){
    p[1].shoot();
  }
