@@ -53,6 +53,8 @@ void draw(){
           p[0].moveXY(-1,0);
       } else if(keys[3]){ //wurde nur 'D' gedrückt
           p[0].moveXY(1,0);
+        } else{
+          p[0].moveXY(0,0);
         }
 
     //Spieler Zwei //Keys 4-7
@@ -78,10 +80,17 @@ void draw(){
           p[1].moveXY(-1,0);
       } else if(keys[7]){ //wurde nur 'Ö' gedrückt
           p[1].moveXY(1,0);
+        } else{
+          p[1].moveXY(0,0);
         }
+
   //zeichne und Update die Spieler
   background(background);
-  collision();
+  collision2P();
+  collisionPandS();
+  textSize(30);
+  text("Spieler 1: " + p[0].life, 60,50);
+  text("Spieler 2: " + p[1].life, width -150,50);
   p[0].render();
   p[0].updateShots();
   p[1].render();
@@ -90,7 +99,7 @@ void draw(){
 
 }
 
-void collision(){
+void collision2P(){
   int j;
   for(int i=0; i < p.length; ++i){
     if(i == p.length -1){
@@ -98,20 +107,25 @@ void collision(){
     } else{
       j = i+1;
     }
+    while(p[i].pos.dist(p[j].pos) < Player.rad){
+      p[0].moveXY(int(p[0].lastVel.x * -1), int(p[0].lastVel.y * -1));
+      p[1].moveXY(int(p[1].lastVel.x * -1), int(p[1].lastVel.y * -1));
+    }
+  }
+}
 
-    float dist = p[i].pos.dist(p[j].pos);
-    if(dist < p[i].radius){
-      background(0);
-/*
-      PVector nDirection = new PVector();
-      nDirection = p[i].lastVel.copy();
-      nDirection.mult(-2*p[i].speed);
-      p[i].pos.add(nDirection);
+void collisionPandS(){
+  for(int i=0; i < p[1].shots.length; ++i){
+    if(p[0].pos.dist(p[1].shots[i].pos) < Player.rad/2 + Shot.rad/2){
+      p[0].life --;
+      p[1].shots[i].pos =  new PVector(-1,-1);
+    }
+  }
 
-      nDirection = p[j].lastVel.copy();
-      nDirection.mult(-2*p[j].speed);
-      p[j].pos.add(nDirection);
-*/
+  for(int i=0; i < p[0].shots.length; ++i){
+    if(p[1].pos.dist(p[0].shots[i].pos) < Player.rad/2 + Shot.rad/2){
+      p[1].life --;
+      p[0].shots[i].pos =  new PVector(-1,-1);
     }
   }
 }
@@ -206,7 +220,9 @@ void keyReleased(){
  }
  //Schuss von Spieler Zwei
  if(key == '-'){
+print("Schuss" + "\n");
    p[1].shoot();
+
  }
 
 }

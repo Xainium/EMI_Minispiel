@@ -2,6 +2,8 @@ class Shot{
   PVector pos = new PVector();
   PVector direction = new PVector();
   int speed = 4;
+  //statische Variabel
+  static final int rad = 10;
 
   Shot(){
     pos.x = -1;
@@ -18,5 +20,9 @@ class Shot{
       pos.x += speed;
     }
 
+  }
+  void render(int r, int g, int b){
+    fill(r,g,b);
+    rect(pos.x, pos.y, rad, rad);
   }
 }

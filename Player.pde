@@ -5,10 +5,12 @@ class Player{
   char b = 0;
 //Übergebene Variabel
   PVector pos = new PVector();
+//statische Variabel
+static final int rad = 30;
+
 //neue Variabeln
   int life = 5;
   int speed = 4;
-  int radius = 30;
   PVector lastVel = new PVector();
   Shot[] shots;
   int sSize = 0;
@@ -33,11 +35,12 @@ void moveXY(int x, int y){
   pos.y += speed*y;
   lastVel.x = x;
   lastVel.y = y;
+  print("lastVel: " + lastVel.x + ", "+ lastVel.y + "\n");
 }
 
 void render(){
   fill(r,g,b);
-  ellipse(pos.x, pos.y, radius, radius);
+  ellipse(pos.x, pos.y, rad, rad);
 
 }
 //Ein neuer Schuss
@@ -47,8 +50,10 @@ void shoot(){
   }else{
      sSize++;
   }
+  print("pos X/Y: "+ pos.x +" + " + pos.y + "\n");
   shots[sSize-1].pos.x = pos.x;
   shots[sSize-1].pos.y = pos.y;
+  print("lastVel X/Y: "+ lastVel.x +" + " + lastVel.y +"\n");
   shots[sSize-1].direction.x = lastVel.x;
   shots[sSize-1].direction.y = lastVel.y;
 }
@@ -63,9 +68,8 @@ void updateShots(){
         shots[i].pos.x = -1;
         shots[i].pos.y = -1;
       }
-//zeichne für jeden Schuss ein Viereck
-      fill(r,g,b);
-      rect(shots[i].pos.x,shots[i].pos.y,10,10);
+      //zeichne für jeden Schuss ein Viereck
+      shots[i].render(r,g,b);
     }
   }
 }

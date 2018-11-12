@@ -39,10 +39,10 @@ public void setup(){
 }
 
 public void draw(){
-//Ist das Menü aktiv?
+  //Ist das Menü aktiv?
   if(isMenu){
     menu.render();
-//Hauptspiel
+    //Hauptspiel
   } else{
   //Abfrage welche Tasten gedrückt wurden
       //Spieler Eins //Keys 0-3
@@ -69,8 +69,9 @@ public void draw(){
           p[0].moveXY(-1,0);
       } else if(keys[3]){ //wurde nur 'D' gedrückt
           p[0].moveXY(1,0);
+        } else{
+          p[0].moveXY(0,0);
         }
-
 
     //Spieler Zwei //Keys 4-7
     if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
@@ -95,22 +96,60 @@ public void draw(){
           p[1].moveXY(-1,0);
       } else if(keys[7]){ //wurde nur 'Ö' gedrückt
           p[1].moveXY(1,0);
+        } else{
+          p[1].moveXY(0,0);
         }
-//zeichne und Update die Spieler
+
+  //zeichne und Update die Spieler
   background(background);
+  collision2P();
+  collisionPandS();
+  textSize(30);
+  text("Spieler 1: " + p[0].life, 60,50);
+  text("Spieler 2: " + p[1].life, width -150,50);
   p[0].render();
   p[0].updateShots();
   p[1].render();
   p[1].updateShots();
   }
 
+}
 
+public void collision2P(){
+  int j;
+  for(int i=0; i < p.length; ++i){
+    if(i == p.length -1){
+      j = 0;
+    } else{
+      j = i+1;
+    }
+    while(p[i].pos.dist(p[j].pos) < Player.rad){
+      p[0].moveXY(PApplet.parseInt(p[0].lastVel.x * -1), PApplet.parseInt(p[0].lastVel.y * -1));
+      p[1].moveXY(PApplet.parseInt(p[1].lastVel.x * -1), PApplet.parseInt(p[1].lastVel.y * -1));
+    }
+  }
+}
+
+public void collisionPandS(){
+  for(int i=0; i < p[1].shots.length; ++i){
+    if(p[0].pos.dist(p[1].shots[i].pos) < Player.rad/2 + Shot.rad/2){
+      p[0].life --;
+      p[1].shots[i].pos =  new PVector(-1,-1);
+    }
+  }
+
+  for(int i=0; i < p[0].shots.length; ++i){
+    if(p[1].pos.dist(p[0].shots[i].pos) < Player.rad/2 + Shot.rad/2){
+      p[1].life --;
+      p[0].shots[i].pos =  new PVector(-1,-1);
+    }
+  }
 }
 
 public void mouseReleased(){
   if(isMenu){
     int result;
-//Welcher Teil Im Menü wird angeklickt
+    //Welcher Teil Im Menü wird angeklickt
     result = menu.checkPress(mouseX, mouseY);
     if(result != -1){
       switch (result){
@@ -133,7 +172,7 @@ public void mouseReleased(){
 
 
 public void keyPressed(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=true;
   }
@@ -146,7 +185,7 @@ public void keyPressed(){
   if(key == 'd'){
     keys[3]=true;
   }
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=true;
   }
@@ -159,12 +198,11 @@ public void keyPressed(){
   if(key == 'ö'){
     keys[7]=true;
   }
-
 }
 
 
 public void keyReleased(){
-//Tasten von Spieler Eins
+  //Tasten von Spieler Eins
   if(key=='w'){
     keys[0]=false;
   }
@@ -178,7 +216,7 @@ public void keyReleased(){
     keys[3]=false;
   }
 
-//Tasten von Spieler Zwei
+  //Tasten von Spieler Zwei
   if(key == 'o'){
     keys[4]=false;
   }
@@ -192,13 +230,15 @@ public void keyReleased(){
     keys[7]=false;
   }
 
-//Schuss von Spieler Eins
+  //Schuss von Spieler Eins
  if(key == 'c'){
    p[0].shoot();
  }
-//Schuss von Spieler Zwei
+ //Schuss von Spieler Zwei
  if(key == '-'){
+print("Schuss" + "\n");
    p[1].shoot();
+
  }
 
 }
@@ -359,6 +399,9 @@ class Player{
   char b = 0;
 //Übergebene Variabel
   PVector pos = new PVector();
+//statische Variabel
+static final int rad = 30;
+
 //neue Variabeln
   int life = 5;
   int speed = 4;
@@ -386,11 +429,12 @@ public void moveXY(int x, int y){
   pos.y += speed*y;
   lastVel.x = x;
   lastVel.y = y;
+  print("lastVel: " + lastVel.x + ", "+ lastVel.y + "\n");
 }
 
 public void render(){
   fill(r,g,b);
-  ellipse(pos.x, pos.y, 30, 30);
+  ellipse(pos.x, pos.y, rad, rad);
 
 }
 //Ein neuer Schuss
@@ -400,8 +444,10 @@ public void shoot(){
   }else{
      sSize++;
   }
+  print("pos X/Y: "+ pos.x +" + " + pos.y + "\n");
   shots[sSize-1].pos.x = pos.x;
   shots[sSize-1].pos.y = pos.y;
+  print("lastVel X/Y: "+ lastVel.x +" + " + lastVel.y +"\n");
   shots[sSize-1].direction.x = lastVel.x;
   shots[sSize-1].direction.y = lastVel.y;
 }
@@ -416,9 +462,8 @@ public void updateShots(){
         shots[i].pos.x = -1;
         shots[i].pos.y = -1;
       }
-//zeichne für jeden Schuss ein Viereck
-      fill(r,g,b);
-      rect(shots[i].pos.x,shots[i].pos.y,10,10);
+      //zeichne für jeden Schuss ein Viereck
+      shots[i].render(r,g,b);
     }
   }
 }
@@ -428,6 +473,8 @@ class Shot{
   PVector pos = new PVector();
   PVector direction = new PVector();
   int speed = 4;
+  //statische Variabel
+  static final int rad = 10;
 
   Shot(){
     pos.x = -1;
@@ -444,6 +491,10 @@ class Shot{
       pos.x += speed;
     }
 
+  }
+  public void render(int r, int g, int b){
+    fill(r,g,b);
+    rect(pos.x, pos.y, rad, rad);
   }
 }
 class powerUp {
@@ -463,23 +514,21 @@ class powerUp {
       powerUpChoose = tempPowerUpChoose;
     } else {
       if (tempPowerUpType != null) {
-        //powerUpChoose = randomPowerUp(tempPowerUpType);
+        powerUpChoose = setRandomPowerUp(tempPowerUpType);
       } else {
-        //powerUpChoose = randomPowerUp();
+        powerUpChoose = setRandomPowerUp(null);
       }
     }
   }
 
-  public String setrRandomPowerUp(String tempPowerUpType) {
+  public String setRandomPowerUp(String tempPowerUpType) {
     if (tempPowerUpType != null) {
 
     } else {
 
     }
-    return "Noch einzufügen";
+    return "armor";
   }
-
-
 
   public PVector setPos() {
     PVector pos = new PVector();
@@ -493,9 +542,6 @@ class powerUp {
 
   public PVector getPos() {
     return pos;
-  }
-
-  public void powerUpEffect(String powerUpChoose) {
   }
 }
   public void settings() {  size(800,600); }
