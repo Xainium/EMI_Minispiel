@@ -10,13 +10,15 @@ class PowerUp {
   PImage powerUpImg; //Img Variable zum laden des PowerUpsImg
 
   //Funktion zum auswwerten der Übergebenen Parameter und setzen des PowerUpStatus
-  PowerUp(String tempPowerUpType, String tempPowerUpChoose) {
-    if (tempPowerUpChoose != null) {
-      powerUpChoose = tempPowerUpChoose;
-    } else if (tempPowerUpType != null) {
+  PowerUp() {
+    setRandomPowerUp(null);
+  }
+
+  PowerUp(String tempPowerUpType) {
+    if ((tempPowerUpType == "positive") || (tempPowerUpType == "negativ")) {
       setRandomPowerUp(tempPowerUpType);
     } else {
-      setRandomPowerUp(null);
+      powerUpChoose = tempPowerUpType;
     }
   }
 
