@@ -1,3 +1,8 @@
+//import der Soundlibary zum Abspielen von Backgroundmusic und anderen Sounds
+import processing.sound.*;
+//Sound wird deklariert
+SoundFile backgroundMusic;
+
 boolean isMenu = true;
 char background = 255;
 //Jedes Element im Array steht dafür ob eine Taste gedrückt wurde
@@ -26,6 +31,9 @@ void setup(){
   for(int i=0; i < keys.length; i++){
     keys[i] = false;
   }
+
+  backgroundMusic = new SoundFile(this, "sound/background/Adventure Meme.mp3");
+  backgroundMusic.play();
 }
 
 void draw(){
