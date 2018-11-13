@@ -11,7 +11,7 @@ class GameSoundEffect {
     soundPath = tempPath;
     soundPathFile = new File(sketchPath("/" + soundPath));
     soundEffectList = soundPathFile.list();
-    soundEffectListPos = int(random(0, soundEffectList.length - 1));
+    soundEffectListPos = int(random(0, soundEffectList.length - 0.0001));
     soundEffect = new SoundFile(EMI_Minispiel.this, soundPath + "/" + soundEffectList[soundEffectListPos]);
     soundEffect.amp(0.05);
   }

@@ -1,12 +1,16 @@
 noch zu tun:
 - Kollsisionabfrage
 	-Spieler v Spieler
-	-Spieler v Schüsse
+	-Spieler v Schï¿½sse
 		-Spieler-Leben
 		-SpielEnde
 	-Schuss v Schuss
-- SubMenü gestaltung
+- SubMenï¿½ gestaltung
 - powerup
 	-rename
 -SoundProbleme
--Wände
+-Wï¿½nde
+
+-Sounds abspielen Ã¼ber Klasse
+	-Klasse Erwetiern um nur ein Spezifischen Sound abzuspielen
+	-LautstÃ¤rke Varieren lassen im MenÃ¼ oder Abschalten bzw. Effecte oder Musik abschalten
