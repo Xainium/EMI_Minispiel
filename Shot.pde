@@ -2,7 +2,8 @@ class Shot{
   PVector pos = new PVector();
   PVector direction = new PVector();
   int speed = 30;
-  static final int rad = 10;
+  static final int diameter = 10;
+  static final int rad = diameter/2;
 
   Shot(){
     pos.x = -1;
@@ -23,6 +24,6 @@ class Shot{
   }
   void render(int r, int g, int b){
     fill(r,g,b);
-    rect(pos.x, pos.y, rad, rad);
+    rect(pos.x, pos.y, diameter, diameter);
   }
 }

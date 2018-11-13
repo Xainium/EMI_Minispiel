@@ -22,10 +22,10 @@ void setup(){
   fps = new Fps();
   //Player initialisieren
   p[0] = new Player(50,height/2);
-  p[0].editColor(char(0), char(0), char(255));
+  p[0].setColor(char(0), char(0), char(255));
   p[0].lastVel = new PVector(1,0);
   p[1] = new Player(width -50, height/2);
-  p[1].editColor(char(255),char(0),char(0));
+  p[1].setColor(char(255),char(0),char(0));
   p[1].lastVel = new PVector(-1,0);
   //PowerUp Single
   pU[0] = new PowerUp();
@@ -62,7 +62,7 @@ void draw(){
 
   //zeichne und Update die Spieler
   background(background);
-  //  collisionPlayerAndPowerUp();
+  collisionPlayerAndPlayer();
   p[0].render();
   p[0].updateShots(lastFrameTime);
   p[1].render();
@@ -75,6 +75,7 @@ void draw(){
 
 void movePlayer(float lastFrameTime){
   //Spieler Eins //Keys 0-3
+  boolean playerInput = true;
   //Wird 'W' (und 'A' oder 'D' gedrückt)
   if(keys[0]){
     if(keys[1]){
@@ -98,10 +99,13 @@ void movePlayer(float lastFrameTime){
         p[0].moveXY(-1,0, lastFrameTime);
     } else if(keys[3]){ //wurde nur 'D' gedrückt
         p[0].moveXY(1,0, lastFrameTime);
+      } else{
+        playerInput= false;
       }
-
+      p[0].isMoving = playerInput;
 
   //Spieler Zwei //Keys 4-7
+  playerInput = true;
   if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
     if(keys[5]){
       p[1].moveXY(-1,-1, lastFrameTime);
@@ -124,7 +128,11 @@ void movePlayer(float lastFrameTime){
         p[1].moveXY(-1,0, lastFrameTime);
     } else if(keys[7]){ //wurde nur 'Ö' gedrückt
         p[1].moveXY(1,0, lastFrameTime);
+      } else{
+        playerInput = false;
       }
+      p[1].isMoving = playerInput;
+
 }
 
 void music() {
@@ -139,7 +147,20 @@ void music() {
   }
 }
 
+void collisionPlayerAndPlayer(){
+  while(p[0].pos.dist(p[1].pos) <= 2*Player.rad){
+    print("muss verschoben werden " + (p[0].pos.x + Player.rad) + " ist gleich " + (p[1].pos.x - Player.rad) + "\n");
+    if(p[0].isMoving)
+      p[0].pos.x += p[0].lastVel.x * -1;
+      p[0].pos.y += p[0].lastVel.y * -1;
 
+    if(p[1].isMoving){
+      p[1].pos.x += p[1].lastVel.x * -1;
+      p[1].pos.y += p[1].lastVel.y * -1;
+    }
+  }
+//  print("muss nicht mehr verschoben werden \n");
+}
 
 void mouseReleased(){
   if(isMenu){
