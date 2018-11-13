@@ -14,7 +14,7 @@ class GameSoundEffect {
     soundEffect.play();
   }
 
-  void soundStartSpecific() {
+  void soundStartSpecific(String tempSoundEffect) {
     soundEffect.stop();
 
   }
