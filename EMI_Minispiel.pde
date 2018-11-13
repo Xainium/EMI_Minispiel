@@ -45,9 +45,9 @@ void setup(){
 }
 
 void draw(){
-  //Ist das Menü aktiv?
   music();
 
+  //Ist das Menü aktiv?
   if(isMenu){
     menu.render();
     //Hauptspiel

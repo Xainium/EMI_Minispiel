@@ -10,7 +10,24 @@ class GameSoundEffect {
 
   }
 
-  GameSoundEffect(String temp) {
+  void soundStart() {
+    soundEffect.play();
+  }
+
+  void soundStartSpecific() {
+    soundEffect.stop();
+
+  }
+
+  void soundNext() {
+
+  }
+
+  void soundStop() {
+    soundEffect.stop();
+  }
+
+  void soundRandom() {
 
   }
 

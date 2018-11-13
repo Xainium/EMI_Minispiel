@@ -34,7 +34,7 @@ class PowerUp {
     } else {
       powerUpOption = int(random(0, powerUpOptionsPositive.length + powerUpOptionsNegativ.length - 0.0001));
       if (powerUpOption >= powerUpOptionsPositive.length - 1) {
-        powerUpOption -= powerUpOptionsPositive.length;
+        powerUpOption -= powerUpOptionsPositive.length - 1;
         powerUpChoose = powerUpOptionsNegativ[powerUpOption];
       } else {
         powerUpChoose = powerUpOptionsPositive[powerUpOption];
