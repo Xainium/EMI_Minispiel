@@ -139,20 +139,7 @@ void music() {
   }
 }
 
-void collisionPlayerAndPowerUp(){
-  for(Player player : p){
-    for(int i = 0; i < pU.length; ++i){
-      for(int j = int(pU[i].pos.x) - PowerUp.iconRad; i <= int(pU[i].pos.x) + PowerUp.iconRad; ++j){
-        for(int k = int(pU[i].pos.y) - PowerUp.iconRad; k <= int(pU[i].pos.y) + PowerUp.iconRad; ++k){
-          if(new PVector(k,j).dist(player.pos) <= Player.rad/2){
-            background(0);
-          }
-        }
-      }
-    }
 
-  }
-}
 
 void mouseReleased(){
   if(isMenu){
