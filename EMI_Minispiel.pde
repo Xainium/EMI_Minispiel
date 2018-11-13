@@ -12,17 +12,21 @@ char background = 255;
 boolean[] keys;
 //Objekte
 Menu menu;
+Fps fps;
 Player[] p = new Player[2];
 PowerUp[] pU = new PowerUp[1];
 
 void setup(){
   background(background);
   size(800,600);
+  fps = new Fps();
   //Player initialisieren
   p[0] = new Player(50,height/2);
   p[0].editColor(char(0), char(0), char(255));
+  p[0].lastVel = new PVector(1,0);
   p[1] = new Player(width -50, height/2);
   p[1].editColor(char(255),char(0),char(0));
+  p[1].lastVel = new PVector(-1,0);
   //PowerUp Single
   pU[0] = new PowerUp();
   pU[0].setPowerUpEffectPotency(3, "normal");
@@ -45,6 +49,7 @@ void setup(){
 }
 
 void draw(){
+  float lastFrameTime = fps.lastFrameTime();
   music();
 
   //Ist das Menü aktiv?
@@ -53,68 +58,73 @@ void draw(){
     //Hauptspiel
   } else{
     //Abfrage welche Tasten gedrückt wurden
-      //Spieler Eins //Keys 0-3
-    //Wird 'W' (und 'A' oder 'D' gedrückt)
-    if(keys[0]){
-      if(keys[1]){
-        p[0].moveXY(-1,-1);
-      } else if(keys[3]){
-        p[0].moveXY(1,-1);
-      } else{
-        p[0].moveXY(0,-1);
-      }
-        //Wird 'S' (und 'A' oder 'D' gedrückt)
-        } else if(keys[2]){
-          if(keys[1]){
-            p[0].moveXY(-1,1);
-          } else if(keys[3]){
-            p[0].moveXY(1,1);
-          } else{
-            p[0].moveXY(0,1);
-            }
-      //Es wurden weder 'W' noch 'S' gedückt
-      } else if(keys[1]){ //wurde nur 'A' gedrückt
-          p[0].moveXY(-1,0);
-      } else if(keys[3]){ //wurde nur 'D' gedrückt
-          p[0].moveXY(1,0);
-        }
+    movePlayer(lastFrameTime);
 
-
-    //Spieler Zwei //Keys 4-7
-    if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
-      if(keys[5]){
-        p[1].moveXY(-1,-1);
-      } else if(keys[7]){
-        p[1].moveXY(1,-1);
-      } else{
-        p[1].moveXY(0,-1);
-      }
-        //Wird 'L' (und 'K' oder 'Ö' gedrückt)
-        } else if(keys[6]){
-          if(keys[5]){
-            p[1].moveXY(-1,1);
-          } else if(keys[7]){
-            p[1].moveXY(1,1);
-          } else{
-            p[1].moveXY(0,1);
-            }
-      //Es wurden weder 'O' noch 'l' gedückt
-      } else if(keys[5]){ //wurde nur 'K' gedrückt
-          p[1].moveXY(-1,0);
-      } else if(keys[7]){ //wurde nur 'Ö' gedrückt
-          p[1].moveXY(1,0);
-        }
   //zeichne und Update die Spieler
   background(background);
   //  collisionPlayerAndPowerUp();
   p[0].render();
-  p[0].updateShots();
+  p[0].updateShots(lastFrameTime);
   p[1].render();
-  p[1].updateShots();
+  p[1].updateShots(lastFrameTime);
 
   //render von Single PowerUps
   pU[0].render();
   }
+}
+
+void movePlayer(float lastFrameTime){
+  //Spieler Eins //Keys 0-3
+  //Wird 'W' (und 'A' oder 'D' gedrückt)
+  if(keys[0]){
+    if(keys[1]){
+      p[0].moveXY(-1,-1, lastFrameTime);
+    } else if(keys[3]){
+      p[0].moveXY(1,-1,lastFrameTime);
+    } else{
+      p[0].moveXY(0,-1,lastFrameTime);
+    }
+      //Wird 'S' (und 'A' oder 'D' gedrückt)
+      } else if(keys[2]){
+        if(keys[1]){
+          p[0].moveXY(-1,1, lastFrameTime);
+        } else if(keys[3]){
+          p[0].moveXY(1,1, lastFrameTime);
+        } else{
+          p[0].moveXY(0,1, lastFrameTime);
+          }
+    //Es wurden weder 'W' noch 'S' gedückt
+    } else if(keys[1]){ //wurde nur 'A' gedrückt
+        p[0].moveXY(-1,0, lastFrameTime);
+    } else if(keys[3]){ //wurde nur 'D' gedrückt
+        p[0].moveXY(1,0, lastFrameTime);
+      }
+
+
+  //Spieler Zwei //Keys 4-7
+  if(keys[4]){ // wurde 'O' (und 'K' oder 'Ö' gedrückt)
+    if(keys[5]){
+      p[1].moveXY(-1,-1, lastFrameTime);
+    } else if(keys[7]){
+      p[1].moveXY(1,-1, lastFrameTime);
+    } else{
+      p[1].moveXY(0,-1, lastFrameTime);
+    }
+      //Wird 'L' (und 'K' oder 'Ö' gedrückt)
+      } else if(keys[6]){
+        if(keys[5]){
+          p[1].moveXY(-1,1, lastFrameTime);
+        } else if(keys[7]){
+          p[1].moveXY(1,1, lastFrameTime);
+        } else{
+          p[1].moveXY(0,1, lastFrameTime);
+          }
+    //Es wurden weder 'O' noch 'l' gedückt
+    } else if(keys[5]){ //wurde nur 'K' gedrückt
+        p[1].moveXY(-1,0, lastFrameTime);
+    } else if(keys[7]){ //wurde nur 'Ö' gedrückt
+        p[1].moveXY(1,0, lastFrameTime);
+      }
 }
 
 void music() {

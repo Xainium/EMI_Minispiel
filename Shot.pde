@@ -1,7 +1,7 @@
 class Shot{
   PVector pos = new PVector();
   PVector direction = new PVector();
-  int speed = 4;
+  int speed = 30;
   static final int rad = 10;
 
   Shot(){
@@ -11,12 +11,14 @@ class Shot{
     direction.y = 0;
   }
 
-  void move(){
-    if(direction.x != 0 || direction.y != 0){
-        pos.x += direction.x*speed;
-        pos.y += direction.y*speed;
+  void move(float lastFrameTime){
+    if(direction.x != 0 && direction.y != 0){
+
+        pos.x += (direction.x * 0.70710678)*speed* lastFrameTime;
+        pos.y += (direction.y * 0.70710678)*speed * lastFrameTime;
     } else{
-      pos.x += speed;
+      pos.x += (direction.x*speed)* lastFrameTime;
+      pos.y += (direction.y*speed) * lastFrameTime;
     }
   }
   void render(int r, int g, int b){

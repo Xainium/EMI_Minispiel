@@ -34,8 +34,8 @@ static class Collision{
     return false;
   }
 
-  static final boolean rectangleAndRectangle(PVector pos0, int rWidth0, int rWidth0,PVector pos1, int rWidth1, int rWidth1){
-    if( (pos0.x => pos1.x ) && (pos0.x + rWidth0 <= pos1.x + rWidth1) && (pos0.y => && pos1.y) && (pos0.y + rHeight10 <= pos1.y + rHeight1) ){
+  static final boolean rectangleAndRectangle(PVector pos0, int rWidth0, int rHeight0,PVector pos1, int rWidth1, int rHeight1){
+    if( (pos0.x >= pos1.x ) && (pos0.x + rWidth0 <= pos1.x + rWidth1) &&  (pos0.y >= pos1.y) && (pos0.y + rHeight0 <= pos1.y + rHeight1) ){
       return true;
     }
     return false;
