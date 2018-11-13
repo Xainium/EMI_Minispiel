@@ -119,8 +119,11 @@ void draw(){
 
 void music() {
   if (!(backGroundMusic.isPlaying())) {
-    backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
+    String tempMusic;
+    tempMusic = backGroundMusicList[int(random(0, backGroundMusicList.length - 0.0001))];
+    backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + tempMusic);
     backGroundMusic.amp(0.05);
+    println(tempMusic);
     backGroundMusic.play();
   }
 }

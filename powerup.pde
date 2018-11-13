@@ -26,13 +26,13 @@ class PowerUp {
   void setRandomPowerUp(String tempPowerUpType) {
     int powerUpOption; //Funktionsvariable um das Richtige Element aus den PowerUpTabellen zu ziehen
     if (tempPowerUpType == "positive") {
-      powerUpOption = int(random(0, powerUpOptionsPositive.length - 1));
+      powerUpOption = int(random(0, powerUpOptionsPositive.length - 0.0001));
       powerUpChoose = powerUpOptionsPositive[powerUpOption];
     } else if (tempPowerUpType == "negativ") {
-      powerUpOption = int(random(0, powerUpOptionsNegativ.length - 1));
+      powerUpOption = int(random(0, powerUpOptionsNegativ.length - 0.0001));
       powerUpChoose = powerUpOptionsNegativ[powerUpOption];
     } else {
-      powerUpOption = int(random(0, powerUpOptionsPositive.length + powerUpOptionsNegativ.length - 1));
+      powerUpOption = int(random(0, powerUpOptionsPositive.length + powerUpOptionsNegativ.length - 0.0001));
       if (powerUpOption >= powerUpOptionsPositive.length - 1) {
         powerUpOption -= powerUpOptionsPositive.length - 1;
         powerUpChoose = powerUpOptionsNegativ[powerUpOption];
