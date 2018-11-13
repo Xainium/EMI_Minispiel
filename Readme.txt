@@ -1,0 +1,12 @@
+noch zu tun:
+- Kollsisionabfrage
+	-Spieler v Spieler
+	-Spieler v Schüsse
+		-Spieler-Leben
+		-SpielEnde
+	-Schuss v Schuss
+- SubMenü gestaltung
+- powerup
+	-rename
+-SoundProbleme
+-Wände
