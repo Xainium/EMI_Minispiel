@@ -1,10 +1,12 @@
 //import der Soundlibary zum Abspielen von Backgroundmusic und anderen Sounds
 import processing.sound.*;
 //Sound wird deklariert
-SoundFile backGroundMusic;
-String backGroundMusicPath = "sound/background";
-File backGroundMusicPathFile;
-String[] backGroundMusicList;
+// SoundFile backGroundMusic;
+// String backGroundMusicPath = "sound/background";
+// File backGroundMusicPathFile;
+// String[] backGroundMusicList;
+
+GameSoundEffect backGroundMusic = new GameSoundEffect();
 
 boolean isMenu = true;
 boolean gameRunning = false;
@@ -40,19 +42,22 @@ void setup(){
     keys[i] = false;
   }
 
-  //BackGroundMusic Initialisiert
-  backGroundMusicPathFile = new File(sketchPath("/" + backGroundMusicPath));
-  backGroundMusicList = backGroundMusicPathFile.list();
-  //println(backGroundMusicList);
-  backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
-  backGroundMusic.amp(0.05);
-  //backGroundMusic.play();
+  // //BackGroundMusic Initialisiert
+  // backGroundMusicPathFile = new File(sketchPath("/" + backGroundMusicPath));
+  // backGroundMusicList = backGroundMusicPathFile.list();
+  // //println(backGroundMusicList);
+  // backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
+  // backGroundMusic.amp(0.05);
+  // //backGroundMusic.play();
+  backGroundMusic = new GameSoundEffect("sound/background");
+  backGroundMusic.setVolume(0.125);
+  // backGroundMusic.soundStart();
 }
 
 void draw(){
   float lastFrameTime = fps.lastFrameTime();
-  music();
-
+  // music();
+  backGroundMusic.soundStart();
   //Ist das Menü aktiv?
   if(isMenu){
     menu.render();
@@ -167,17 +172,17 @@ void movePlayer(float lastFrameTime){
 
 }
 
-void music() {
-  if (!(backGroundMusic.isPlaying())) {
-    println(!(backGroundMusic.isPlaying()));
-    String tempMusic;
-    tempMusic = backGroundMusicList[int(random(0, backGroundMusicList.length - 0.0001))];
-    backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + tempMusic);
-    backGroundMusic.amp(0.05);
-    println(tempMusic);
-    backGroundMusic.play();
-  }
-}
+// void music() {
+//   if (!(backGroundMusic.isPlaying())) {
+//     println(!(backGroundMusic.isPlaying()));
+//     String tempMusic;
+//     tempMusic = backGroundMusicList[int(random(0, backGroundMusicList.length - 0.0001))];
+//     backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + tempMusic);
+//     backGroundMusic.amp(0.05);
+//     println(tempMusic);
+//     backGroundMusic.play();
+//   }
+// }
 
 void collisionPlayerAndPlayer(){
   while(p[0].pos.dist(p[1].pos) <= 2*Player.rad){

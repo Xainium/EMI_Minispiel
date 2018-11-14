@@ -7,6 +7,10 @@ class GameSoundEffect {
   String[] soundEffectList; //Liste in dem die File namen abgelegt werden
   int soundEffectListPos; //Position in liste der Sounddatei
 
+  GameSoundEffect() {
+
+  }
+
   GameSoundEffect(String tempPath) {
     soundPath = tempPath;
     soundPathFile = new File(sketchPath("/" + soundPath));
@@ -17,10 +21,14 @@ class GameSoundEffect {
   }
 
   void soundStart() {
-    if (soundEffect.isPlaying()) {
-      soundEffect.stop();
+    if (0 ==frameCount % 100) {
+      println(frameCount);
     }
-    soundEffect.play();
+    if (soundEffect.isPlaying()) {
+
+    } else {
+      soundEffect.play();
+    }
   }
 
   void soundStartSpecific(String tempSoundEffect) {
@@ -28,7 +36,7 @@ class GameSoundEffect {
       soundEffect.stop();
     }
 
-    for (int i = 0; i > soundEffectList.length; ++i) {
+    for (int i = 0; i <= soundEffectList.length - 1; ++i) {
       if (tempSoundEffect == soundEffectList[i]) {
           soundEffectListPos = i;
       }
@@ -36,6 +44,10 @@ class GameSoundEffect {
 
     soundEffect = new SoundFile(EMI_Minispiel.this, soundPath + "/" + tempSoundEffect + ".mp3");
     soundEffect.play();
+  }
+
+  void soundSetSpecific(String tempSpecific) {
+    soundEffect = new SoundFile(EMI_Minispiel.this, tempSpecific);
   }
 
   void soundNext() {
@@ -52,11 +64,19 @@ class GameSoundEffect {
     soundEffect.play();
   }
 
+  void soundLoop() {
+    soundEffect.loop();
+  }
+
   void soundStop() {
     soundEffect.stop();
   }
 
   void soundPause() {
     soundEffect.pause();
+  }
+
+  void setVolume(float tempVolume) {
+    soundEffect.amp(tempVolume);
   }
 }
