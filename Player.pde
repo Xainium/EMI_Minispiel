@@ -27,7 +27,6 @@ Player(int x, int y){
   for(int i=0; i < shots.length; i++){
     shots[i] = new Shot();
   }
-
 }
 
 void setColor(char r_in, char g_in, char b_in){
@@ -56,11 +55,12 @@ void moveXY(int x, int y, float lastFrameTime){
   lastVel.y = y;
 }
 
-void render(){
+void render(PVector lifeBar){
   fill(c.r,c.g,c.b);
   ellipse(pos.x, pos.y, diameter, diameter);
-
+  rect(lifeBar.x,lifeBar.y,life*30,30);
 }
+
 
 //Ein neuer Schuss
 void shoot(){

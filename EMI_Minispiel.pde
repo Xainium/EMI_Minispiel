@@ -7,6 +7,7 @@ File backGroundMusicPathFile;
 String[] backGroundMusicList;
 
 boolean isMenu = true;
+boolean gameRunning = false;
 char background = 255;
 //Jedes Element im Array steht dafür ob eine Taste gedrückt wurde
 boolean[] keys;
@@ -59,20 +60,51 @@ void draw(){
   } else{
     //Abfrage welche Tasten gedrückt wurden
     movePlayer(lastFrameTime);
-
-  //zeichne und Update die Spieler
-  background(background);
-  collisionPlayerAndPlayer();
-  p[0].render();
-  p[0].updateShots(lastFrameTime);
-  p[1].render();
-  p[1].updateShots(lastFrameTime);
-
-  //render von Single PowerUps
-  pU[0].render();
+    gameRunning = isGameOver();
+  if(gameRunning){
+    noCursor();
+    //zeichne und Update die Spieler
+    background(background);
+    collisionPlayerAndPlayer();
+    collisionPlayerAndShots();
+    p[0].render(new PVector(0,0));
+    p[0].updateShots(lastFrameTime);
+    p[1].render(new PVector(width-p[1].life*30,0));
+    p[1].updateShots(lastFrameTime);
+    //render von Single PowerUps
+    pU[0].render();
   }
 }
+}
+boolean isGameOver(){
+  for(int i= 0; i <p.length; ++i){
+    if(p[i].life <= 0){
+      gameRunning = false;
+      gameOver(++i);
+      return false;
+    }
+  }
 
+  return true;
+}
+void gameOver(int player){
+
+  background(background);
+  for(int i=0; i < width; i+=20){
+    line(0,height,i,0);
+  }
+  for(int j=0; j < width; j+=20){
+    line(0,height,width,j);
+  }
+
+  fill(100);
+  textAlign(CENTER,CENTER);
+  textSize(100);
+  text("Game Over",width/2,height/2-60-25);
+  textSize(60);
+  textAlign(CENTER,CENTER);
+  text("Spieler " + player +" hat gewonnen!",width/2,height/2+60-15);
+}
 void movePlayer(float lastFrameTime){
   //Spieler Eins //Keys 0-3
   boolean playerInput = true;
@@ -161,6 +193,26 @@ void collisionPlayerAndPlayer(){
   }
 //  print("muss nicht mehr verschoben werden \n");
 }
+void collisionPlayerAndShots(){
+  for (int i=0; i < p[1].shots.length; ++i){
+    if(!p[1].shots[i].pos.equals(new PVector(-1,-1))){
+      if(p[0].pos.dist(p[1].shots[i].pos) <= Player.rad + Shot.rad){
+              p[0].life--;
+              p[1].shots[i].pos.x = -1;
+              p[1].shots[i].pos.y = -1;
+      }
+    }
+  }
+  for (int i=0; i < p[0].shots.length; ++i){
+    if(!p[0].shots[i].pos.equals(new PVector(-1,-1))){
+      if(p[1].pos.dist(p[0].shots[i].pos) <= Player.rad + Shot.rad){
+        p[1].life--;
+        p[0].shots[i].pos.x = -1;
+        p[0].shots[i].pos.y = -1;
+      }
+    }
+  }
+}
 
 void mouseReleased(){
   if(isMenu){
@@ -171,6 +223,7 @@ void mouseReleased(){
       switch (result){
         case 1: // der Start Button wurde geklickt
           isMenu = false;
+          gameRunning = true;
           break;
 
         case 2: // der Settings Button wurde geklickt
