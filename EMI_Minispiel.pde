@@ -23,18 +23,6 @@ void setup(){
   background(background);
   size(800,600);
   fps = new Fps();
-  //Player initialisieren
-  p[0] = new Player(50,height/2);
-  p[0].setColor(char(0), char(0), char(255));
-  p[0].lastVel = new PVector(1,0);
-  p[1] = new Player(width -50, height/2);
-  p[1].setColor(char(255),char(0),char(0));
-  p[1].lastVel = new PVector(-1,0);
-  //PowerUp Single
-  pU[0] = new PowerUp();
-  pU[0].setPowerUpEffectPotency(3, "normal");
-  pU[0].setPos();
-  pU[0].setPowerUpImage();
   //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
@@ -60,14 +48,15 @@ void draw(){
   backGroundMusic.soundStart();
   //Ist das Menü aktiv?
   if(isMenu){
+    cursor();
     menu.render();
-    //Hauptspiel
   } else{
-    //Abfrage welche Tasten gedrückt wurden
-    movePlayer(lastFrameTime);
+      //Hauptspiel
     gameRunning = isGameOver();
   if(gameRunning){
     noCursor();
+    //Abfrage welche Tasten gedrückt wurden
+    movePlayer(lastFrameTime);
     //zeichne und Update die Spieler
     background(background);
     collisionPlayerAndPlayer();
@@ -78,8 +67,24 @@ void draw(){
     p[1].updateShots(lastFrameTime);
     //render von Single PowerUps
     pU[0].render();
+  } else{
+    cursor();
   }
 }
+}
+void startNewGame(){
+  //Player initialisieren
+  p[0] = new Player(50,height/2);
+  p[0].setColor(char(0), char(0), char(255));
+  p[0].lastVel = new PVector(1,0);
+  p[1] = new Player(width -50, height/2);
+  p[1].setColor(char(255),char(0),char(0));
+  p[1].lastVel = new PVector(-1,0);
+  //PowerUp Single
+  pU[0] = new PowerUp();
+  pU[0].setPowerUpEffectPotency(3, "normal");
+  pU[0].setPos();
+  pU[0].setPowerUpImage();
 }
 boolean isGameOver(){
   for(int i= 0; i <p.length; ++i){
@@ -229,6 +234,7 @@ void mouseReleased(){
         case 1: // der Start Button wurde geklickt
           isMenu = false;
           gameRunning = true;
+          startNewGame();
           break;
 
         case 2: // der Settings Button wurde geklickt
@@ -241,6 +247,10 @@ void mouseReleased(){
           break;
       }
     }
+  } else if(!gameRunning){
+    isMenu = true;
+    gameRunning = false;
+    startNewGame();
   }
 }
 
