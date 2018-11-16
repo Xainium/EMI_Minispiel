@@ -1,10 +1,12 @@
 //import der Soundlibary zum Abspielen von Backgroundmusic und anderen Sounds
 import processing.sound.*;
 //Sound wird deklariert
-SoundFile backGroundMusic;
-String backGroundMusicPath = "sound/background";
-File backGroundMusicPathFile;
-String[] backGroundMusicList;
+// SoundFile backGroundMusic;
+// String backGroundMusicPath = "sound/background";
+// File backGroundMusicPathFile;
+// String[] backGroundMusicList;
+
+GameSoundEffect backGroundMusic = new GameSoundEffect();
 
 boolean isMenu = true;
 boolean gameRunning = false;
@@ -21,6 +23,56 @@ void setup(){
   background(background);
   size(800,600);
   fps = new Fps();
+  //Menü initialisieren
+  menu = new Menu(background, width, height);
+  keys = new boolean[8];
+  for(int i=0; i < keys.length; i++){
+    keys[i] = false;
+  }
+
+  // //BackGroundMusic Initialisiert
+  // backGroundMusicPathFile = new File(sketchPath("/" + backGroundMusicPath));
+  // backGroundMusicList = backGroundMusicPathFile.list();
+  // //println(backGroundMusicList);
+  // backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
+  // backGroundMusic.amp(0.05);
+  // //backGroundMusic.play();
+  backGroundMusic = new GameSoundEffect("sound/background");
+  backGroundMusic.setVolume(0.125);
+  // backGroundMusic.soundStart();
+}
+
+void draw(){
+  float lastFrameTime = fps.lastFrameTime();
+  // music();
+  backGroundMusic.soundStart();
+  //Ist das Menü aktiv?
+  if(isMenu){
+    cursor();
+    menu.render();
+  } else{
+      //Hauptspiel
+    gameRunning = isGameOver();
+  if(gameRunning){
+    noCursor();
+    //Abfrage welche Tasten gedrückt wurden
+    movePlayer(lastFrameTime);
+    //zeichne und Update die Spieler
+    background(background);
+    collisionPlayerAndPlayer();
+    collisionPlayerAndShots();
+    p[0].render(new PVector(0,0));
+    p[0].updateShots(lastFrameTime);
+    p[1].render(new PVector(width-p[1].life*30,0));
+    p[1].updateShots(lastFrameTime);
+    //render von Single PowerUps
+    pU[0].render();
+  } else{
+    cursor();
+  }
+}
+}
+void startNewGame(){
   //Player initialisieren
   p[0] = new Player(50,height/2);
   p[0].setColor(char(0), char(0), char(255));
@@ -33,48 +85,6 @@ void setup(){
   pU[0].setPowerUpEffectPotency(3, "normal");
   pU[0].setPos();
   pU[0].setPowerUpImage();
-  //Menü initialisieren
-  menu = new Menu(background, width, height);
-  keys = new boolean[8];
-  for(int i=0; i < keys.length; i++){
-    keys[i] = false;
-  }
-
-  //BackGroundMusic Initialisiert
-  backGroundMusicPathFile = new File(sketchPath("/" + backGroundMusicPath));
-  backGroundMusicList = backGroundMusicPathFile.list();
-  //println(backGroundMusicList);
-  backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
-  backGroundMusic.amp(0.05);
-  //backGroundMusic.play();
-}
-
-void draw(){
-  float lastFrameTime = fps.lastFrameTime();
-  music();
-
-  //Ist das Menü aktiv?
-  if(isMenu){
-    menu.render();
-    //Hauptspiel
-  } else{
-    //Abfrage welche Tasten gedrückt wurden
-    movePlayer(lastFrameTime);
-    gameRunning = isGameOver();
-  if(gameRunning){
-    noCursor();
-    //zeichne und Update die Spieler
-    background(background);
-    collisionPlayerAndPlayer();
-    collisionPlayerAndShots();
-    p[0].render(new PVector(0,0));
-    p[0].updateShots(lastFrameTime);
-    p[1].render(new PVector(width-p[1].life*30,0));
-    p[1].updateShots(lastFrameTime);
-    //render von Single PowerUps
-    pU[0].render();
-  }
-}
 }
 boolean isGameOver(){
   for(int i= 0; i <p.length; ++i){
@@ -167,17 +177,17 @@ void movePlayer(float lastFrameTime){
 
 }
 
-void music() {
-  if (!(backGroundMusic.isPlaying())) {
-    println(!(backGroundMusic.isPlaying()));
-    String tempMusic;
-    tempMusic = backGroundMusicList[int(random(0, backGroundMusicList.length - 0.0001))];
-    backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + tempMusic);
-    backGroundMusic.amp(0.05);
-    println(tempMusic);
-    backGroundMusic.play();
-  }
-}
+// void music() {
+//   if (!(backGroundMusic.isPlaying())) {
+//     println(!(backGroundMusic.isPlaying()));
+//     String tempMusic;
+//     tempMusic = backGroundMusicList[int(random(0, backGroundMusicList.length - 0.0001))];
+//     backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + tempMusic);
+//     backGroundMusic.amp(0.05);
+//     println(tempMusic);
+//     backGroundMusic.play();
+//   }
+// }
 
 void collisionPlayerAndPlayer(){
   while(p[0].pos.dist(p[1].pos) <= 2*Player.rad){
@@ -224,6 +234,7 @@ void mouseReleased(){
         case 1: // der Start Button wurde geklickt
           isMenu = false;
           gameRunning = true;
+          startNewGame();
           break;
 
         case 2: // der Settings Button wurde geklickt
@@ -236,6 +247,10 @@ void mouseReleased(){
           break;
       }
     }
+  } else if(!gameRunning){
+    isMenu = true;
+    gameRunning = false;
+    startNewGame();
   }
 }
 
