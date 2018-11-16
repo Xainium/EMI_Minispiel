@@ -103,7 +103,7 @@ void gameOver(int player){
   text("Game Over",width/2,height/2-60-25);
   textSize(60);
   textAlign(CENTER,CENTER);
-  text("Spieler " + player +" hat gewonnen!",width/2,height/2+60-15);
+  text("Spieler " + (player-1) +" hat verloren!",width/2,height/2+60-15);
 }
 void movePlayer(float lastFrameTime){
   //Spieler Eins //Keys 0-3

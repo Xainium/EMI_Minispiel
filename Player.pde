@@ -42,8 +42,15 @@ Color getColor() {
 void moveXY(int x, int y, float lastFrameTime){
   PVector tempPos = new PVector(); //Spielfeld Begrenzung, Spieler können nicht mehr außerhalb des Spielfeldes
 
-  tempPos.x = pos.x + (speed*x)*lastFrameTime; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
-  tempPos.y = pos.y + (speed*y)*lastFrameTime; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
+  if( x != 0 && y != 0){
+    tempPos.x = pos.x +(x*0.70710678)*speed*lastFrameTime;
+    tempPos.y = pos.y +(y*0.70710678)*speed*lastFrameTime;
+
+  }else{
+    tempPos.x = pos.x + (speed*x)*lastFrameTime; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wird
+    tempPos.y = pos.y + (speed*y)*lastFrameTime; //Temporäre position um erst zu überprüfen ob nicht Spielfeld Überrschritten wir
+  }
+
   if ((tempPos.x <= width - rad) && (tempPos.x >= rad)) { //Abfrage ob Linker oder Rechter Rand erreicht -15 Spielerballgröße
     pos.x = tempPos.x; //"Globaler" Wert wird geändert Spielerballposition
   }
