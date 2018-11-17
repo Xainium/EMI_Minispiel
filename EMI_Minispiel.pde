@@ -191,7 +191,6 @@ void movePlayer(float lastFrameTime){
 
 void collisionPlayerAndPlayer(){
   while(p[0].pos.dist(p[1].pos) <= 2*Player.rad){
-    print("muss verschoben werden " + (p[0].pos.x + Player.rad) + " ist gleich " + (p[1].pos.x - Player.rad) + "\n");
     if(p[0].isMoving)
       p[0].pos.x += p[0].lastVel.x * -1;
       p[0].pos.y += p[0].lastVel.y * -1;
@@ -201,7 +200,6 @@ void collisionPlayerAndPlayer(){
       p[1].pos.y += p[1].lastVel.y * -1;
     }
   }
-//  print("muss nicht mehr verschoben werden \n");
 }
 void collisionPlayerAndShots(){
   for (int i=0; i < p[1].shots.length; ++i){

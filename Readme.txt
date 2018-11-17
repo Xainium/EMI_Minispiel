@@ -1,9 +1,9 @@
 noch zu tun:
 - Kollsisionabfrage
-	-Spieler v Spieler
-	-Spieler v Sch�sse
-		-Spieler-Leben
-		-SpielEnde
+	-Spieler v Spieler   x
+	-Spieler v Sch�sse    x
+		-Spieler-Leben     x
+		-SpielEnde          x
 	-Schuss v Schuss
 - SubMen� gestaltung
 - powerup

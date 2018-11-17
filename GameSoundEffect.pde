@@ -22,7 +22,7 @@ class GameSoundEffect {
 
   void soundStart() {
     if (0 ==frameCount % 100) {
-      println(frameCount);
+     // println(frameCount);
     }
     if (soundEffect.isPlaying()) {
 
