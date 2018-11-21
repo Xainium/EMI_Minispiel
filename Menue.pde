@@ -4,6 +4,7 @@ class Menu{
   int screenWidth;
   int screenHeight;
 //neue Variabeln
+  PImage backgroundImage;
   boolean mainMenuVisible = true;
   boolean settingsVisible = false;
   int rectWidth = 400;
@@ -20,7 +21,7 @@ class Menu{
     cbackground = cbackground_in;
     screenWidth = screenWidth_in;
     screenHeight = screenHeight_in;
-
+    backgroundImage = loadImage("img/menu/menuBackground.jpeg");
     bBack = new PVector(screenWidth-75, screenHeight-75);
   }
 //Überprüfe ob Spieler Button gedrückt hat
@@ -77,7 +78,7 @@ class Menu{
 //zeichne aktuelles Munü
   void render(){
     if(mainMenuVisible){
-      background(cbackground);
+      image(backgroundImage,0,0);
       fill(100, 150, 255);
       rect(bStart.x,bStart.y,rectWidth,rectHeight,10);
       fill(220);
