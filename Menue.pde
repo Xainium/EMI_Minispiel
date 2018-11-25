@@ -7,12 +7,14 @@ class Menu{
   PImage backgroundImage;
   boolean mainMenuVisible = true;
   boolean settingsVisible = false;
+  boolean isMusic = true;
   int rectWidth = 400;
   int rectHeight = 100;
   PVector bStart = new PVector(200,100);
   PVector bSettings = new PVector(200,250);
+  PVector bMusic = new PVector(200,250);
   PVector bQuit = new PVector(200,400);
-  PVector bBack;
+  PVector bBack = new PVector(200,400);
   int pressedColorPlayer1 = 0;
   int pressedColorPlayer2 = 0;
 
@@ -22,7 +24,7 @@ class Menu{
     screenWidth = screenWidth_in;
     screenHeight = screenHeight_in;
     backgroundImage = loadImage("img/menu/menuBackground.jpeg");
-    bBack = new PVector(screenWidth-75, screenHeight-75);
+    //bBack = new PVector(screenWidth-120, screenHeight-100);
   }
 //Überprüfe ob Spieler Button gedrückt hat
   int checkPress(int mouse_x, int mouse_y){
@@ -49,36 +51,22 @@ class Menu{
 
         return -1;
     } else if(settingsVisible){
-      if(mouse_x > bBack.x && mouse_x < bBack.x + 75
-         && mouse_y > bBack.y && mouse_y < bBack.y + 75){
-           mainMenuVisible = true;
-           settingsVisible = false;
-
-        } else if(mouse_x > 50 && mouse_x < 50 + 300
-           && mouse_y > 200 && mouse_y < 200 + 100){
-             if(pressedColorPlayer1 < 3){
-               pressedColorPlayer1++;
-             } else{
-               pressedColorPlayer1 = 0;
-             }
-
-           } else if(mouse_x > screenWidth- 350 && mouse_x < screenWidth- 50
-              && mouse_y > 200 && mouse_y < 200 + 100){
-                if(pressedColorPlayer2 < 3){
-                  pressedColorPlayer2++;
-                } else{
-                  pressedColorPlayer2 = 1;
-                }
-
-              }
+      if(Collision.pointInRect(new PVector(mouse_x,mouse_y), bMusic,rectWidth,rectHeight)){
+        isMusic = !isMusic;
+      }
+      if(Collision.pointInRect(new PVector(mouse_x,mouse_y), bBack,rectWidth,rectHeight)){
+        mainMenuVisible = true;
+        settingsVisible = false;
+      }
     return -1;
     }
     return -1;
   }
 //zeichne aktuelles Munü
   void render(){
+    image(backgroundImage,0,0);
     if(mainMenuVisible){
-      image(backgroundImage,0,0);
+
       fill(100, 150, 255);
       rect(bStart.x,bStart.y,rectWidth,rectHeight,10);
       fill(220);
@@ -102,50 +90,27 @@ class Menu{
       text("Quit",bQuit.x + 200, bQuit.y + 45);
 
     } else if(settingsVisible){
-      background(background);
-      switch(pressedColorPlayer1){
-        case 0:
-          fill(100,150,255);
-          break;
-        case 1:
-          fill(60,215,225);
-          break;
-        case 2:
-          fill(155,230,85);
-          break;
-        case 3:
-          fill(215,85,230);
-          break;
+
+      fill(100, 150, 255);
+      rect(bMusic.x,bMusic.y,rectWidth,rectHeight,10);
+      fill(220);
+      textFont(retroFont);
+      textSize(70);
+      textAlign(LEFT,CENTER);
+      if(isMusic){
+        text("Music        On",bMusic.x+20, bMusic.y + 45);
+      } else{
+        text("Music        Off",bMusic.x+20, bMusic.y + 45);
       }
 
-      rect(50,200,300,100);
-      fill(225);
-      textSize(50);
-      textAlign(CENTER,CENTER);
-      text("Spieler Eins",50 + 150,200 + 40);
 
-      switch(pressedColorPlayer2){
-        case 0:
-          fill(100,150,255);
-          break;
-        case 1:
-          fill(60,215,225);
-          break;
-        case 2:
-          fill(155,230,85);
-          break;
-        case 3:
-          fill(215,85,230);
-          break;
-      }
-      rect(screenWidth- 350,200,300,100);
-      fill(225);
-      textSize(50);
+      fill(100, 150, 255);
+      rect(bQuit.x,bQuit.y,rectWidth,rectHeight,10);
+      fill(220);
+      textFont(retroFont);
+      textSize(70);
       textAlign(CENTER,CENTER);
-      text("Spieler Zwei",screenWidth- 350 + 150,200 + 40);
-
-      fill(100,150,255);
-      rect(bBack.x, bBack.y,75,75);
+      text("Back",bQuit.x + 200, bQuit.y + 45);
 
     }
   }

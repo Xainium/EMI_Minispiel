@@ -21,13 +21,11 @@ class GameSoundEffect {
   }
 
   void soundStart() {
-    if (0 ==frameCount % 100) {
+    if (0 == frameCount % 100) {
      // println(frameCount);
     }
-    if (soundEffect.isPlaying()) {
-
-    } else {
-      soundEffect.play();
+    if (!soundEffect.isPlaying()) {
+        soundEffect.play();
     }
   }
 
@@ -69,11 +67,20 @@ class GameSoundEffect {
   }
 
   void soundStop() {
-    soundEffect.stop();
+    if(soundEffect.isPlaying()){
+      soundEffect.stop();
+    }
   }
 
   void soundPause() {
-    soundEffect.pause();
+    if(soundEffect.isPlaying()){
+        soundEffect.pause();
+    }
+  }
+  void soundPlay(){
+    if(!soundEffect.isPlaying()){
+      soundEffect.play();
+    }
   }
 
   void setVolume(float tempVolume) {

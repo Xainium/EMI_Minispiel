@@ -7,7 +7,7 @@ import processing.sound.*;
 // String[] backGroundMusicList;
 
 GameSoundEffect backGroundMusic = new GameSoundEffect();
-static PFont retroFont = new PFont();
+PFont retroFont = new PFont();
 TextAnimation gameOverAnimation;
 boolean isMenu = true;
 boolean gameRunning = false;
@@ -34,22 +34,26 @@ void setup(){
 
   }
 
-  // //BackGroundMusic Initialisiert
   // backGroundMusicPathFile = new File(sketchPath("/" + backGroundMusicPath));
   // backGroundMusicList = backGroundMusicPathFile.list();
   // //println(backGroundMusicList);
   // backGroundMusic = new SoundFile(this, backGroundMusicPath + "/" + backGroundMusicList[int(random(0, backGroundMusicList.length - 1))]);
   // backGroundMusic.amp(0.05);
   // //backGroundMusic.play();
+  //BackGroundMusic Initialisiert
   backGroundMusic = new GameSoundEffect("sound/background");
   backGroundMusic.setVolume(0.125);
-  // backGroundMusic.soundStart();
+  backGroundMusic.soundStart();
 }
 
 void draw(){
   float lastFrameTime = fps.lastFrameTime();
   // music();
-  //backGroundMusic.soundStart();
+  if(menu.isMusic){
+    backGroundMusic.soundPlay();
+  } else{
+    backGroundMusic.soundStop();
+  }
   //Ist das Menü aktiv?
   if(isMenu){
     cursor();
