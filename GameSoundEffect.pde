@@ -42,7 +42,7 @@ class GameSoundEffect {
       }
     }
 
-    soundEffect = new SoundFile(EMI_Minispiel.this, soundPath + "/" + tempSoundEffect + ".mp3");
+    soundEffect = new SoundFile(EMI_Minispiel.this, soundPath + "/" + tempSoundEffect + ".wave");
     soundEffect.play();
   }
 

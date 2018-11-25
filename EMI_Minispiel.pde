@@ -7,7 +7,8 @@ import processing.sound.*;
 // String[] backGroundMusicList;
 
 GameSoundEffect backGroundMusic = new GameSoundEffect();
-
+static PFont retroFont = new PFont();
+TextAnimation gameOverAnimation;
 boolean isMenu = true;
 boolean gameRunning = false;
 char background = 255;
@@ -22,12 +23,15 @@ PowerUp[] pU = new PowerUp[1];
 void setup(){
   background(background);
   size(800,600);
+  retroFont = createFont("font/ARCADECLASSIC.TTF",32);
+  gameOverAnimation = new TextAnimation(new PVector(width/2,height/2-75),"Player",10,150,retroFont,background);
   fps = new Fps();
   //Menü initialisieren
   menu = new Menu(background, width, height);
   keys = new boolean[8];
   for(int i=0; i < keys.length; i++){
     keys[i] = false;
+
   }
 
   // //BackGroundMusic Initialisiert
@@ -45,7 +49,7 @@ void setup(){
 void draw(){
   float lastFrameTime = fps.lastFrameTime();
   // music();
-  backGroundMusic.soundStart();
+  //backGroundMusic.soundStart();
   //Ist das Menü aktiv?
   if(isMenu){
     cursor();
@@ -61,6 +65,7 @@ void draw(){
     background(background);
     collisionPlayerAndPlayer();
     collisionPlayerAndShots();
+    collisionPlayerAndPowerup();
     p[0].render(new PVector(0,0));
     p[0].updateShots(lastFrameTime);
     p[1].render(new PVector(width-p[1].life*30,0));
@@ -99,21 +104,9 @@ boolean isGameOver(){
 }
 void gameOver(int player){
 
-  background(background);
-  for(int i=0; i < width; i+=20){
-    line(0,height,i,0);
-  }
-  for(int j=0; j < width; j+=20){
-    line(0,height,width,j);
-  }
-
-  fill(100);
-  textAlign(CENTER,CENTER);
-  textSize(100);
-  text("Game Over",width/2,height/2-60-25);
-  textSize(60);
-  textAlign(CENTER,CENTER);
-  text("Spieler " + (player-1) +" hat verloren!",width/2,height/2+60-15);
+  String tempS = new String("Player  "+ player + "\nhas  lost");
+  gameOverAnimation.setString(tempS);
+  gameOverAnimation.nextFrame();
 }
 void movePlayer(float lastFrameTime){
   //Spieler Eins //Keys 0-3
@@ -191,10 +184,10 @@ void movePlayer(float lastFrameTime){
 
 void collisionPlayerAndPlayer(){
   while(p[0].pos.dist(p[1].pos) <= 2*Player.rad){
-    if(p[0].isMoving)
+    if(p[0].isMoving){
       p[0].pos.x += p[0].lastVel.x * -1;
       p[0].pos.y += p[0].lastVel.y * -1;
-
+      }
     if(p[1].isMoving){
       p[1].pos.x += p[1].lastVel.x * -1;
       p[1].pos.y += p[1].lastVel.y * -1;
@@ -217,6 +210,16 @@ void collisionPlayerAndShots(){
         p[1].life--;
         p[0].shots[i].pos.x = -1;
         p[0].shots[i].pos.y = -1;
+      }
+    }
+  }
+}
+void collisionPlayerAndPowerup(){
+  for(int i=0; i < pU.length; i++){
+    for(int j=0; j < p.length; j++){
+      if(Collision.circleAndRectangle(p[j].pos, Player.rad, pU[i].pos, PowerUp.iconRad, PowerUp.iconRad)){
+        //pU[i].powerUpAcitvation(p[j]);
+        background(200);
       }
     }
   }

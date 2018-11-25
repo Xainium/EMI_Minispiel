@@ -96,7 +96,6 @@ class PowerUp {
 
   //Render Funktion für das Objekt auf dem Spielfeld
   void render() {
-    imageMode(CENTER);
     image(powerUpImg, pos.x, pos.y, iconRad, iconRad);
   }
 

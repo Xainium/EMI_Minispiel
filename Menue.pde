@@ -82,6 +82,7 @@ class Menu{
       fill(100, 150, 255);
       rect(bStart.x,bStart.y,rectWidth,rectHeight,10);
       fill(220);
+      textFont(retroFont);
       textSize(70);
       textAlign(CENTER,CENTER);
       text("Start",bStart.x + 200, bStart.y + 45);
